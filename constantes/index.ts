@@ -117,3 +117,27 @@ export const Candidates = [
         evenementId : 1
     },
 ]
+
+export const adminSideBarLinks = [
+    {
+        img:"/admin/analytics.svg", 
+        path: "/admin", 
+        text : "Vue d'ensemble"
+    },
+    {
+        img:"/admin/calendar.svg", 
+        path: "/evenement", 
+        text : "Evènement"
+    }, 
+    
+    {
+        img:"/admin/crown.svg", 
+        path: "/candidates", 
+        text : "Candidates"
+    },
+    {
+        img:"/admin/credit-card.svg", 
+        path: "/credit-card", 
+        text : "Payement"
+    }
+]

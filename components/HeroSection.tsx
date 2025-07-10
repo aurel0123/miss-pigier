@@ -24,19 +24,18 @@ const HeroSection = () => {
             </div>
             {/* Buttons CTA */}
             <div className="flex flex-col md:flex-row gap-4 md:gap-8 items-center z-30 w-full">
-                <Button size="lg" className="lg:px-10 lg:py-8 font-bold text-lg w-full md:w-auto" asChild>
+                <Button className=" text-md px-4 py-3 lg:px-10 lg:py-8 font-bold lg:text-lg w-full md:w-auto" asChild>
                     <Link href="/candidates">
                         DECOUVREZ LES CANDIDATES
                     </Link>
                 </Button>
                 <Button
-                    size="lg"
                     variant="outline"
-                    className="lg:px-10 lg:py-8 font-bold text-lg bg-transparent border border-primary hover:bg-transparent w-full md:w-auto"
+                    className=" text-md px-4 py-3 lg:px-10 lg:py-8 font-bold lg:text-lg bg-transparent border border-primary hover:bg-transparent w-full md:w-auto"
                     asChild
                 >
                     <Link href="/candidates">
-                        DECOUVREZ LES CANDIDATES
+                        VOTER MAINTENANT
                     </Link>
                 </Button>
             </div>

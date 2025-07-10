@@ -1,8 +1,17 @@
-import React from 'react'
+import Sidebar from '@/components/admin/Sidebar'
+import React, { ReactNode } from 'react'
+import '@/styles/admin.css'
+import Header from '@/components/admin/Header'
 
-const layout = () => {
+const layout = ({children} : {children : ReactNode}) => {
     return (
-        <div>layout</div>
+        <main className='flex min-h-screen w-full flex-row'>
+            <Sidebar />
+            <div className='adminContainer'>
+                <Header/>
+                {children}
+            </div>
+        </main>
     )
 }
 
