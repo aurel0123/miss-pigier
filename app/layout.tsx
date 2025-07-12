@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Montserrat , Poppins } from "next/font/google";
 import "./globals.css";
-
+import { Toaster } from "@/components/ui/sonner";
 
 // Importer les polices avec les options souhaitées
 const montserrat = Montserrat({
@@ -30,6 +30,7 @@ export default function RootLayout({
         className={`${montserrat.className} ${poppins.variable} antialiased`}
       >
         {children}
+        <Toaster/>
       </body>
     </html>
   );

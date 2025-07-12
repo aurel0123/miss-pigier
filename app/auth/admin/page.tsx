@@ -17,17 +17,31 @@ import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import PasswordInput from '@/components/password-input'
 import { Checkbox } from '@/components/ui/checkbox';
+import { toast } from 'sonner';
+import { useRouter } from 'next/navigation';
+import { signInWithcredentials } from '@/lib/actions/auth';
 
 const Page = () => {
+    const router = useRouter()
     const form = useForm<z.infer<typeof loginSchema>>({
         resolver: zodResolver(loginSchema),
         defaultValues: {
-            username: "",
+            email: "",
             password : ""
         },
     })
-    function onSubmit(values: z.infer<typeof loginSchema>) {
-        console.log(values)
+    async function onSubmit(values: z.infer<typeof loginSchema>) {
+        const result = await signInWithcredentials(values)
+        if(result.success){
+            toast.success("Success" , {
+                description: "Connexion réussi"
+            }) ; 
+            router.push("/admin");
+        }else{
+            toast.error("Error d'authentification : ", {
+                description: result.error ?? "An error occurred."
+            });
+        }
     }
     return (
         <div className="min-h-screen bg-gradient-to-br from-black via-neutral-900 to-black flex items-center justify-center p-4">
@@ -49,13 +63,13 @@ const Page = () => {
                         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
                             <FormField
                             control={form.control}
-                            name="username"
+                            name="email"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Username</FormLabel>
+                                    <FormLabel>Email</FormLabel>
                                     <FormControl>
                                         <Input 
-                                            placeholder="username" {...field} 
+                                            placeholder="name@gmail.com" {...field} 
                                             className="border-input placeholder:text-muted-foreground focus-visible:ring-ring flex h-10 w-full rounded-md border bg-transparent px-3 py-2 text-sm shadow-xs transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium focus-visible:ring-1 focus-visible:outline-hidden disabled:cursor-not-allowed disabled:opacity-50"
                                         />
                                     </FormControl>

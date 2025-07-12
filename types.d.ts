@@ -15,3 +15,8 @@ export interface NavigationLink {
     label: string;
     icon?: LucideIcon; // icon devient optionnel ici
 }
+
+export interface AuthCredentials {
+    email : string , 
+    password : string
+}

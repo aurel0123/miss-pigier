@@ -6,10 +6,10 @@
     }
     /* Admin sidebar */
     .adminSidebar{
-        @apply sticky left-0 top-0 flex w-64 min-h-screen p-4 flex-col justify-between bg-white ;
+        @apply sticky left-0 top-0 flex lg:w-72 min-h-screen p-4 flex-col justify-between bg-white ;
     }
     .adminSidebar .logo {
-        @apply flex flex-row items-center gap-2 border-b border-dashed border-amber-400 pb-10 max-md:justify-center;
+        @apply flex flex-row items-center gap-2 border-b border-dashed border-amber-400 py-6 max-md:justify-center;
     }
      .adminSidebar  .logo h1 {
         @apply text-2xl font-semibold text-amber-300 max-md:hidden;
@@ -23,7 +23,7 @@
         @apply text-base font-medium max-md:hidden;
     }
     .adminSidebar .user {
-        @apply my-8 flex w-full flex-row items-center gap-2 rounded-full border border-neutral-400 px-6 py-2 max-md:px-2;
+        @apply  flex w-full flex-row items-center gap-2 rounded-full border border-neutral-400 px-2 py-2 max-md:px-2;
     }
     .adminHeader {
         @apply flex lg:items-end items-start justify-between lg:flex-row flex-col gap-5 sm:mb-10 mb-5;
