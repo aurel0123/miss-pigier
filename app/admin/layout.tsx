@@ -10,11 +10,11 @@ import { eq } from 'drizzle-orm'
 
 const layout = async ({children} : {children : ReactNode}) => {
     const session = await auth(); 
-    if(!session?.user) redirect('/auth/admin')
+    if(!session?.user || !session.user.id) redirect('/auth/admin')
     const isConnect = await db
         .select()
         .from(admins)
-        .where(eq(admins.id, session?.user?.id))
+        .where(eq(admins.id, session.user.id))
         .limit(1)
     if(isConnect.length == 0) {
         redirect('/')
