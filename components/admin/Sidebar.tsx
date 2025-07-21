@@ -37,10 +37,10 @@ export default function Sidebar({session} : {session : Session}) {
                                                 src={link.img}
                                                 alt="icon"
                                                 fill
-                                                className = {`${isSelected ? "brightness-0 invert" : ""} object-contain`}
+                                                className = {`${isSelected ? "brightness-0 " : ""} object-contain`}
                                             />
                                         </div>
-                                        <p className={cn(isSelected ? "text-white" : "text-gray-500")}>
+                                        <p className={cn(isSelected ? "text-primary-foreground" : "text-gray-500")}>
                                             {link.text}
                                         </p>
                                     </div>

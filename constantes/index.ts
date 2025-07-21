@@ -126,13 +126,13 @@ export const adminSideBarLinks = [
     },
     {
         img:"/admin/calendar.svg", 
-        path: "/evenement", 
+        path: "/admin/evenements", 
         text : "Evènement"
     }, 
     
     {
         img:"/admin/crown.svg", 
-        path: "/candidates", 
+        path: "/admin/candidates", 
         text : "Candidates"
     },
     {
