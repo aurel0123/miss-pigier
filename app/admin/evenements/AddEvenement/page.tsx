@@ -33,7 +33,7 @@ const Page = () => {
 
   const onSubmit = async (values: z.infer<typeof EvenementSchema>) => {
     try {
-      const response = await fetch(`${config.env.apiEndpoint}/api/Evenement/add`, {
+      const response = await fetch(`${config.env.apiEndpoint}api/Evenement/add`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
