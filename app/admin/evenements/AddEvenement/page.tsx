@@ -63,7 +63,7 @@ const Page = () => {
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className="w-full p-6 border-2 bg-white rounded-xl"
+          className="w-full p-6 shadow-2xl bg-white rounded-xl"
         >
           <div className="flex flex-col space-y-4">
             <FormField

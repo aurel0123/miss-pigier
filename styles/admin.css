@@ -1,5 +1,12 @@
 @import "tailwindcss";
 
+
+@layer base {
+    body {
+        @apply bg-neutral-200 text-gray-950
+    }
+}
+
 @layer components {
     .adminContainer {
         @apply flex w-[calc(100%-264px)] flex-1 flex-col bg-neutral-200 p-5 sm:p-10 shadow-md;
@@ -27,5 +34,8 @@
     }
     .adminHeader {
         @apply flex lg:items-end items-start justify-between lg:flex-row flex-col gap-5 sm:mb-10 mb-5;
+    }
+    .evenement {
+        @apply w-full mt-10 grid grid-cols-1 lg:grid-cols-3 md:grid-cols-2 gap-4 ; 
     }
 }

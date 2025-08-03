@@ -20,3 +20,14 @@ export interface AuthCredentials {
     email : string , 
     password : string
 }
+export interface Evenement {
+    id : string , 
+    titre : string , 
+    description: string ,
+    image : string, 
+    prixUnitaireVote : number , 
+    dateDebut : Date ,
+    dateFin : Date , 
+    satus : string , 
+    createdAt : Date | null , 
+}
