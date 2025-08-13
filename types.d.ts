@@ -1,12 +1,14 @@
 import { LucideIcon } from "lucide-react";
 export interface Candidate{
     id: number , 
-    fullName : string , 
-    program: string;
-    description: string;
-    votes: number;
+    nom : string , 
+    prenom : string, 
+    filiere: string;
+    description: string | null;
     image: string;
-    evenementId : number
+    nombreVotes : number | null, 
+    evenementId : number, 
+    createdAt : Date | null , 
 }
 
 

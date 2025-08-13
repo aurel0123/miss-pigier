@@ -86,7 +86,7 @@ const CandidatesSection = ({candidates} : Props) => {
                 </div>
             </motion.div>
             <section className="py-10 px-4">
-                <div className="flex flex-col mx-auto">
+                <div className="flex flex-col px-1 mx-auto">
                     <motion.h2
                         className="text-2xl md:text-4xl font-bold text-yellow-400 text-center mb-4"
                         initial={{ opacity: 0, y: 20 }}
@@ -122,7 +122,7 @@ const CandidatesSection = ({candidates} : Props) => {
                             >
                                 {/* Badge */}
                                 <Badge className='absolute top-4 right-4 z-20 bg-secondary'>
-                                    {getCodeFil(candidate.program)}
+                                    {getCodeFil(candidate.filiere)}
                                 </Badge>
                                 <div className="relative h-full overflow-hidden rounded-2xl">
                                     <motion.img
@@ -137,7 +137,7 @@ const CandidatesSection = ({candidates} : Props) => {
                                 <div className='absolute bottom-0 left-0 right-0 z-20 p-2'>
                                     <div>
                                         <Link href={`/candidates/${candidate.id}`} className='text-primary hover:underline font-extrabold text-base'>
-                                            {candidate.fullName}
+                                            {candidate.nom}{" "} {candidate.prenom}
                                         </Link>
                                         <p className='text-[12px]'>
                                             {candidate.description}
@@ -147,7 +147,7 @@ const CandidatesSection = ({candidates} : Props) => {
                                         <div className='flex flex-col text-sm'>
                                             <h4 className='font-semibold'>VOTES</h4>
                                             <p className='text-lg font-extrabold text-primary'>
-                                                {candidate.votes}
+                                                {candidate.nombreVotes}
                                             </p>
                                         </div>
                                         <Button size="sm" className=''>

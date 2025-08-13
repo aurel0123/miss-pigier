@@ -34,6 +34,7 @@ export const candidates = pgTable("candidates", {
   filiere: varchar("filiere", { length: 255 }).notNull(), 
   description: text("description"), 
   image: varchar("image", { length: 512 }).notNull(),
+  nombreVotes : integer("nombreVotes"),
   evenementId: uuid("evenement_id").notNull().references(() => evenements.id),
   createdAt: timestamp("created_at").defaultNow(), 
 });

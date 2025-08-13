@@ -45,6 +45,7 @@ const Page = () => {
           filiere: "",
           description: "",
           image: "",
+          nombreVotes : 0,
           evenementId: evenementId || "",
           imagePreview: null,
         },
@@ -72,6 +73,7 @@ const Page = () => {
       filiere: "",
       description: "",
       image: "",
+      nombreVotes : 0, 
       evenementId: evenementId || "",
       imagePreview: null,
     });
@@ -99,6 +101,7 @@ const Page = () => {
         filiere: student.filiere,
         description: student.description || "",
         image: imageUrls[index] || student.image || "",
+        nombreVotes : 0 , 
         evenementId: evenementId,
       }));
       const response = await fetch(`${config.env.apiEndpoint}/api/candidates/createdCandidates`, {

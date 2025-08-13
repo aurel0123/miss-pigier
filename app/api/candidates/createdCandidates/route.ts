@@ -53,6 +53,7 @@ export async function POST(request: NextRequest) {
       filiere: student.filiere,
       description: student.description || null,
       image: student.image,
+      nombreVotes : student.nombreVotes, 
       evenementId: student.evenementId,
     }));
     const insertedCandidates = await db

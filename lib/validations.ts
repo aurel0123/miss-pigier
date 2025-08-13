@@ -71,7 +71,7 @@ export const candidateSchema = z.object({
     }, {
       message: "Doit être une URL valide ou un chemin relatif commençant par /"
     }),
-    
+  nombreVotes : z.number(),
   evenementId: z.string().uuid("L'ID de l'événement doit être un UUID valide"),
   imagePreview: z.string().optional().nullable(),
 });
