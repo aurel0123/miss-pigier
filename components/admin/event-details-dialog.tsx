@@ -3,7 +3,7 @@
 import React from 'react'
 import { Evenement } from '@/types'
 import Image from 'next/image'
-import { Calendar, Clock, DollarSign, FileText, X } from 'lucide-react'
+import { Calendar, Clock, DollarSign, FileText } from 'lucide-react'
 import {
     Dialog,
     DialogContent,
@@ -52,7 +52,7 @@ const EventDetailsDialog: React.FC<EventDetailsDialogProps> = ({
             <DialogTrigger asChild>
                 {trigger}
             </DialogTrigger>
-            <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+            <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto bg-neutral-100">
                 <DialogHeader>
                     <DialogTitle className="text-2xl font-bold text-center">
                         Détails de l&apos;événement
@@ -74,7 +74,7 @@ const EventDetailsDialog: React.FC<EventDetailsDialogProps> = ({
                             className="w-full h-64 object-cover rounded-lg"
                             style={{ objectFit: 'cover' }}
                         />
-                        <Badge className={`absolute top-4 right-4 ${getStatusColor(event.status)}`}>
+                        <Badge className={`absolute top-4 right-4 ${getStatusColor(event.satus)}`}>
                             {event.satus}
                         </Badge>
                     </div>
@@ -125,8 +125,8 @@ const EventDetailsDialog: React.FC<EventDetailsDialogProps> = ({
                                     <FileText className="h-5 w-5 text-purple-600" />
                                     <div>
                                         <p className="text-sm font-medium text-gray-500">Statut</p>
-                                        <Badge className={getStatusColor(event.status)}>
-                                            {event.status}
+                                        <Badge className={getStatusColor(event.satus)}>
+                                            {event.satus}
                                         </Badge>
                                     </div>
                                 </div>

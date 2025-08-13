@@ -26,3 +26,14 @@ export const admins = pgTable("admins", {
   password: varchar("password", { length: 255 }).notNull(),
   createdAt: timestamp("created_at").defaultNow(),
 });
+
+export const candidates = pgTable("candidates", {
+  id: uuid("id").primaryKey().notNull().defaultRandom().unique(),
+  nom: varchar("nom", { length: 100 }).notNull(),
+  prenom: varchar("prenom", { length: 100 }).notNull(), 
+  filiere: varchar("filiere", { length: 255 }).notNull(), 
+  description: text("description"), 
+  image: varchar("image", { length: 512 }).notNull(),
+  evenementId: uuid("evenement_id").notNull().references(() => evenements.id),
+  createdAt: timestamp("created_at").defaultNow(), 
+});

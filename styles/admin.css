@@ -1,13 +1,11 @@
 @import "tailwindcss";
 
 
-@layer base {
-    body {
-        @apply bg-neutral-200 text-gray-950
-    }
-}
 
 @layer components {
+    .bg-content{
+        @apply bg-neutral-200 text-gray-950
+    }
     .adminContainer {
         @apply flex w-[calc(100%-264px)] flex-1 flex-col bg-neutral-200 p-5 sm:p-10 shadow-md;
     }

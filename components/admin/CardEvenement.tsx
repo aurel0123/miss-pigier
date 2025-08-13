@@ -95,7 +95,7 @@ const CardEvenement = ({
         <div className='flex flex-col gap-2 items-center justify-center space-y-2 py-2'>
             <h1 className="text-2xl font-bold">{titre}</h1>
             <div className='flex gap-2'>
-                <Link href={`/admin/evenement/${id}/candidat`}>
+                <Link href={`/admin/evenements/${id}/candidates`}>
                     <Button className='flex flex-1'>
                         <Plus/>
                         Ajouter un Candidat

@@ -44,3 +44,34 @@ export const EvenementSchema = z.object({
     .date()
     .refine(date => date > new Date(), "La date de fin doit être dans le futur")
 })
+
+export const candidateSchema = z.object({
+  nom: z.string()
+    .min(1, "Le nom est requis")
+    .min(2, "Le nom doit contenir au moins 2 caractères")
+    .max(100, "Le nom ne peut pas dépasser 100 caractères"),
+    
+  prenom: z.string()
+    .min(1, "Le prénom est requis")
+    .min(2, "Le prénom doit contenir au moins 2 caractères")
+    .max(100, "Le prénom ne peut pas dépasser 100 caractères"),
+    
+  filiere: z.string()
+    .min(1, "La filière est requise")
+    .min(2, "La filière doit contenir au moins 2 caractères")
+    .max(255, "La filière ne peut pas dépasser 255 caractères"),
+    
+  description: z.string().optional(),
+  
+  image: z.string()
+    .min(1, "L'image est requise")
+    .max(512, "L'URL de l'image ne peut pas dépasser 512 caractères")
+    .refine(value => {
+      return value.startsWith('http') ? /^https?:\/\/.+/i.test(value) : value.startsWith('/');
+    }, {
+      message: "Doit être une URL valide ou un chemin relatif commençant par /"
+    }),
+    
+  evenementId: z.string().uuid("L'ID de l'événement doit être un UUID valide"),
+  imagePreview: z.string().optional().nullable(),
+});

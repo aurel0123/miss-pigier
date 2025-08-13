@@ -15,6 +15,13 @@
       "when": 1752313690952,
       "tag": "0001_tan_scarlet_witch",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1755018583030,
+      "tag": "0002_petite_molly_hayes",
+      "breakpoints": true
     }
   ]
 }
