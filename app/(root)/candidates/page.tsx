@@ -25,6 +25,7 @@ const Page = async () => {
         .select()
         .from(candidates)
         .where(eq(candidates.evenementId, evenementId))
+    console.log(listCandidates)
     return (
         <>
             <CandidatesSection 
