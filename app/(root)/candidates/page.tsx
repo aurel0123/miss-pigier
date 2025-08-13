@@ -4,6 +4,7 @@ import { db } from '@/database/drizzle'
 import { candidates } from '@/database/schema'
 import config from '@/lib/config'
 import { eq } from 'drizzle-orm'
+export const dynamic = 'force-dynamic'; // force le rechargement à chaque requête
 
 const Page = async () => {
     const getCurrentEvent = async () => {
@@ -20,7 +21,9 @@ const Page = async () => {
     }
     
     const evenementId = await getCurrentEvent()
-    
+    if (!evenementId) {
+        return <p>Impossible de charger les candidats : événement introuvable.</p>;
+    }
     const listCandidates = await db
         .select()
         .from(candidates)
