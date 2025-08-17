@@ -37,12 +37,8 @@ export const EvenementSchema = z.object({
     .optional() , 
   prix_unitaire : z
     .number(), 
-  date_debut : z
-    .date()
-    .refine(date => date > new Date(), "La date de début doit être dans le futur"),
-  date_fin : z
-    .date()
-    .refine(date => date > new Date(), "La date de fin doit être dans le futur")
+  date_debut: z.coerce.date(),
+  date_fin: z.coerce.date().refine(date => date > new Date(), "La date de fin doit être dans le futur")
 })
 
 export const candidateSchema = z.object({
@@ -74,4 +70,24 @@ export const candidateSchema = z.object({
   nombreVotes : z.number(),
   evenementId: z.string().uuid("L'ID de l'événement doit être un UUID valide"),
   imagePreview: z.string().optional().nullable(),
+});
+
+export const voteSchema = z.object({
+  numero_tel: z
+    .string()
+    .min(8, "Le numéro de téléphone doit contenir au moins 8 chiffres")
+    .max(15, "Le numéro de téléphone ne doit pas dépasser 15 chiffres")
+    .regex(/^[0-9]+$/, "Le numéro de téléphone doit contenir uniquement des chiffres"),
+
+  candidat_id: z
+    .string()
+    .min(1, "Le candidat est requis"),
+
+  paiement_id: z
+    .string()
+    .uuid("L'ID du paiement doit être un UUID valide"),
+
+  created_at: z
+    .date()
+    .default(() => new Date()), // si tu veux qu'il prenne auto la date
 });

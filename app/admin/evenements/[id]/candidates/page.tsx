@@ -18,7 +18,7 @@ import { useForm, useFieldArray } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { candidateSchema } from "@/lib/validations";
 import UploadCandidate from "@/components/UploadCandidate";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import config from "@/lib/config";
 import { toast } from "sonner";
 
@@ -29,6 +29,7 @@ const formSchema = z.object({
 type FormData = z.infer<typeof formSchema>;
 
 const Page = () => {
+  const router = useRouter();
   const params = useParams();
   const getEvenementId = (): string => {
     if (!params.id) return "";
@@ -120,7 +121,7 @@ const Page = () => {
       form.reset();
       setImageUrls({});
       // Optionnel : Rediriger vers la liste des candidats
-      // router.push(`/evenements/${evenementId}/candidates`);
+      router.push(`/admin/candidates`);
     } catch (error) {
       console.error("Erreur lors de la soumission:", error);
       
@@ -129,6 +130,31 @@ const Page = () => {
 
   return (
     <div className="mt-10">
+      {/* <div className="bg-blue-50 dark:bg-blue-900/30 rounded-lg p-4 mt-10 flex items-start">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          className="h-6 w-6 text-blue-600 dark:text-blue-400 mt-0.5 mr-3 flex-shrink-0"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="2"
+            d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+          />
+        </svg>
+        <div>
+          <h3 className="font-medium text-blue-800 dark:text-blue-300">
+            Ajouter des candidats à votre événement
+          </h3>
+          <p className="mt-1 text-sm text-blue-700 dark:text-blue-400">
+            Vous pouvez ajouter plusieurs candidats en une seule fois. Chaque
+            candidat sera invité à participer à l&apos;événement.
+          </p>
+        </div>
+      </div> */}
       <div className="flex justify-end">
         <Button onClick={addStudent} className="flex items-center gap-2 mb-10">
           <Plus size={16} />

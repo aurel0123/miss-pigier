@@ -8,9 +8,7 @@ export async function GET(
   { params }: { params: { id: string } }
 ) {
   try {
-    const { id } = params
-    
-    // Récupération de l'événement par ID
+    const { id } = await params
     const evenement = await db
       .select()
       .from(evenements)
@@ -19,16 +17,22 @@ export async function GET(
     
     if (evenement.length === 0) {
       return NextResponse.json(
-        { error: 'Événement non trouvé' },
+        { success: false, error: 'Événement non trouvé' },
         { status: 404 }
       )
     }
     
-    return NextResponse.json(evenement[0], { status: 200 })
+    return NextResponse.json({
+      success: true,
+      data: evenement[0]
+    });
   } catch (error) {
     console.error('Erreur lors de la récupération:', error)
     return NextResponse.json(
-      { error: 'Erreur lors de la récupération de l\'événement' },
+      { 
+        success: false, 
+        error: 'Erreur interne du serveur lors de la récupération' 
+      },
       { status: 500 }
     )
   }

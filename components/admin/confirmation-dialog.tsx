@@ -12,8 +12,6 @@ import {
     AlertDialogTitle,
     AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
-import { Button } from '../ui/button'
-
 interface ConfirmationDialogProps {
     trigger: React.ReactNode
     title: string
@@ -60,7 +58,7 @@ const ConfirmationDialog: React.FC<ConfirmationDialogProps> = ({
             <AlertDialogContent className='bg-neutral-100 text-gray-900 border-transparent'>
                 <AlertDialogHeader>
                     <AlertDialogTitle>{title}</AlertDialogTitle>
-                    <AlertDialogDescription>
+                    <AlertDialogDescription className='text-gray-700'>
                         {description}
                     </AlertDialogDescription>
                 </AlertDialogHeader>

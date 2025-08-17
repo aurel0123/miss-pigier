@@ -11,7 +11,7 @@ export async function GET() {
             sql`${currentDate} BETWEEN ${evenements.dateDebut} AND ${evenements.dateFin}`
         )
         .orderBy(desc(evenements.createdAt))
-        .limit(1)
+        .limit(2)
     if (getEvenment && getEvenment.length > 0) {
         return new Response(JSON.stringify(getEvenment), {
             status: 201,

@@ -74,8 +74,8 @@ const EventDetailsDialog: React.FC<EventDetailsDialogProps> = ({
                             className="w-full h-64 object-cover rounded-lg"
                             style={{ objectFit: 'cover' }}
                         />
-                        <Badge className={`absolute top-4 right-4 ${getStatusColor(event.satus)}`}>
-                            {event.satus}
+                        <Badge className={`absolute top-4 right-4 ${getStatusColor(event.status)}`}>
+                            {event.status}
                         </Badge>
                     </div>
 
@@ -125,8 +125,8 @@ const EventDetailsDialog: React.FC<EventDetailsDialogProps> = ({
                                     <FileText className="h-5 w-5 text-purple-600" />
                                     <div>
                                         <p className="text-sm font-medium text-gray-500">Statut</p>
-                                        <Badge className={getStatusColor(event.satus)}>
-                                            {event.satus}
+                                        <Badge className={getStatusColor(event.status)}>
+                                            {event.status}
                                         </Badge>
                                     </div>
                                 </div>

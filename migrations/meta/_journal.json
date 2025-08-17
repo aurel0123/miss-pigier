@@ -5,29 +5,8 @@
     {
       "idx": 0,
       "version": "7",
-      "when": 1752260051306,
-      "tag": "0000_lowly_psynapse",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "7",
-      "when": 1752313690952,
-      "tag": "0001_tan_scarlet_witch",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "7",
-      "when": 1755018583030,
-      "tag": "0002_petite_molly_hayes",
-      "breakpoints": true
-    },
-    {
-      "idx": 3,
-      "version": "7",
-      "when": 1755089652770,
-      "tag": "0003_clumsy_speed",
+      "when": 1755435467350,
+      "tag": "0000_lucky_starfox",
       "breakpoints": true
     }
   ]

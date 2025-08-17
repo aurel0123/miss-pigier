@@ -26,7 +26,7 @@ const CardEvenement = ({
     prixUnitaireVote , 
     dateDebut, 
     dateFin , 
-    satus, 
+    status, 
     createdAt
 } : Evenement) => {
 
@@ -70,7 +70,7 @@ const CardEvenement = ({
     prixUnitaireVote,
     dateDebut,
     dateFin,
-    satus,
+    status,
     createdAt
   }
 
@@ -89,7 +89,7 @@ const CardEvenement = ({
                 />
             </div>
             <div className='absolute top-2 right-2 '>
-                <Badge className='h-6 w-20 '>{satus}</Badge>
+                <Badge className='h-6 w-20 '>{status}</Badge>
             </div>
         </div>
         <div className='flex flex-col gap-2 items-center justify-center space-y-2 py-2'>
@@ -114,7 +114,7 @@ const CardEvenement = ({
                         <Eye size={20}/>
                         Afficher l&apos;événement
                     </Link>
-                    <Link href={`/admin/evenement/${id}`} className='flex items-center gap-2 hover:bg-neutral-200 p-2 rounded-md'>
+                    <Link href={`/admin/evenements/${id}/updateEvenment`} className='flex items-center gap-2 hover:bg-neutral-200 p-2 rounded-md'>
                         <Pencil size={20}/>
                         Modifier l&apos;événement
                     </Link>

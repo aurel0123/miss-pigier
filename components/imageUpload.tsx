@@ -1,6 +1,6 @@
 "use client"
 import config from '@/lib/config';
-import React, { useRef, useState } from 'react'
+import React, { useRef, useState, useEffect } from 'react'
 import { IKImage, ImageKitProvider, IKUpload } from "imagekitio-next";
 import { toast } from 'sonner';
 import Image from 'next/image';
@@ -47,10 +47,36 @@ const ImageUpload = ({
 }: Props) => {
     
     const ikUploadRef = useRef(null);
-    const [file, setFile] = useState<{ filePath: string | null }>({
-        filePath: value ?? null,
+    const [file, setFile] = useState<{ filePath: string | null; url?: string }>({
+        filePath: null,
+        url: undefined,
     });
     const [progress, setProgress] = useState(0);
+
+    // Effet pour gérer la valeur initiale et les changements
+    useEffect(() => {
+        if (value) {
+            // Si la valeur est une URL complète ImageKit
+            if (value.includes(urlEndpoint)) {
+                const filePath = value.replace(urlEndpoint + '/', '');
+                setFile({ filePath, url: value });
+            } 
+            // Si c'est juste un filePath
+            else if (value.startsWith('/')) {
+                setFile({ filePath: value, url: value });
+            }
+            // Si c'est une URL complète d'une autre source
+            else if (value.startsWith('http')) {
+                setFile({ filePath: value, url: value });
+            }
+            // Si c'est juste un nom de fichier
+            else {
+                setFile({ filePath: value, url: `${urlEndpoint}/${value}` });
+            }
+        } else {
+            setFile({ filePath: null });
+        }
+    }, [value, urlEndpoint]);
 
     const styles = {
         button: "bg-neutral-100 border-gray-100 border",
@@ -66,9 +92,13 @@ const ImageUpload = ({
     };
 
     const onSuccess = (res: { filePath: string, url: string }) => {
-        setFile(res);
-        // Envoyez l'URL complète plutôt que juste le filePath
-        onFileChange(res.url || `${urlEndpoint}/${res.filePath}`);
+        const newFile = {
+            filePath: res.filePath,
+            url: res.url || `${urlEndpoint}/${res.filePath}`
+        };
+        setFile(newFile);
+        // Envoyez l'URL complète
+        onFileChange(newFile.url);
         toast.success("Image téléchargée avec succès");
     };
 
@@ -92,6 +122,12 @@ const ImageUpload = ({
         return true;
     };
 
+    const handleRemoveImage = () => {
+        setFile({ filePath: null });
+        onFileChange("");
+        toast.success("Image supprimée");
+    };
+
     // Vérifiez si les variables requises sont disponibles
     if (!publicKey || !urlEndpoint) {
         return (
@@ -109,68 +145,110 @@ const ImageUpload = ({
             urlEndpoint={urlEndpoint}
             authenticator={authenticator}
         >
-            <IKUpload
-                ref={ikUploadRef}
-                onError={onError}
-                onSuccess={onSuccess}
-                useUniqueFileName={true}
-                validateFile={onValidate}
-                onUploadStart={() => setProgress(0)}
-                onUploadProgress={({ loaded, total }) => {
-                    const percent = Math.round((loaded / total) * 100);
-                    setProgress(percent);
-                }}
-                folder={folder}
-                accept={accept}
-                className="hidden"
-            />
-
-            <button
-                className={cn("upload-btn", styles.button)}
-                onClick={(e) => {
-                    e.preventDefault();
-                    if (ikUploadRef.current) {
-                        // @ts-expect-error: IKUpload ref type does not include click(), but it is available at runtime
-                        ikUploadRef.current?.click();
-                    }
-                }}
-            >
-                <Image
-                    src="/admin/upload.svg"
-                    alt="upload-icon"
-                    width={20}
-                    height={20}
-                    className="object-contain"
-                />
-
-                <p className={cn("text-base pl-1", styles.placeholder)}>{placeholder}</p>
-
-                {file.filePath && (
-                    <p className={cn("upload-filename", styles.text)}>{file.filePath}</p>
-                )}
-            </button>
-
-            {progress > 0 && progress !== 100 && (
-                <div className="w-full rounded-full bg-green-200">
-                    <div className="progress" style={{ width: `${progress}%` }}>
-                        {progress}%
-                    </div>
-                </div>
-            )}
-
-            {file.filePath && (
-                <IKImage
-                    alt={file.filePath ?? "uploaded image"}
-                    path={file.filePath ?? undefined}
-                    width={800}
-                    height={300}
-                    onError={() => {
-                        toast.error("Image not found on server. Please upload again.");
-                        setFile({ filePath: null });
-                        onFileChange("");
+            <div className="space-y-4">
+                <IKUpload
+                    ref={ikUploadRef}
+                    onError={onError}
+                    onSuccess={onSuccess}
+                    useUniqueFileName={true}
+                    validateFile={onValidate}
+                    onUploadStart={() => setProgress(0)}
+                    onUploadProgress={({ loaded, total }) => {
+                        const percent = Math.round((loaded / total) * 100);
+                        setProgress(percent);
                     }}
+                    folder={folder}
+                    accept={accept}
+                    className="hidden"
                 />
-            )}
+
+                {/* Bouton d'upload */}
+                <button
+                    type="button"
+                    className={cn("upload-btn p-4 rounded-lg border-2 border-dashed w-full flex flex-col items-center gap-2", styles.button)}
+                    onClick={(e) => {
+                        e.preventDefault();
+                        if (ikUploadRef.current) {
+                            // @ts-expect-error: IKUpload ref type does not include click(), but it is available at runtime
+                            ikUploadRef.current?.click();
+                        }
+                    }}
+                >
+                    <Image
+                        src="/admin/upload.svg"
+                        alt="upload-icon"
+                        width={20}
+                        height={20}
+                        className="object-contain"
+                    />
+
+                    <p className={cn("text-base", styles.placeholder)}>
+                        {file.filePath ? 'Changer l\'image' : placeholder}
+                    </p>
+
+                    {file.filePath && (
+                        <p className={cn("upload-filename text-sm", styles.text)}>
+                            {file.filePath.length > 50 ? '...' + file.filePath.slice(-50) : file.filePath}
+                        </p>
+                    )}
+                </button>
+
+                {/* Barre de progression */}
+                {progress > 0 && progress !== 100 && (
+                    <div className="w-full bg-gray-200 rounded-full h-2">
+                        <div 
+                            className="bg-blue-600 h-2 rounded-full transition-all duration-300 flex items-center justify-center text-xs text-white" 
+                            style={{ width: `${progress}%` }}
+                        >
+                            {progress > 20 && `${progress}%`}
+                        </div>
+                    </div>
+                )}
+
+                {/* Affichage de l'image */}
+                {file.filePath && (
+                    <div className="relative border rounded-lg overflow-hidden">
+                        {/* Pour les URLs ImageKit */}
+                        {file.filePath && !file.filePath.startsWith('http') ? (
+                            <IKImage
+                                alt={file.filePath ?? "uploaded image"}
+                                path={file.filePath ?? undefined}
+                                width={800}
+                                height={300}
+                                className="w-full h-48 object-cover"
+                                onError={() => {
+                                    toast.error("Image not found on server. Please upload again.");
+                                    setFile({ filePath: null });
+                                    onFileChange("");
+                                }}
+                            />
+                        ) : (
+                            /* Pour les URLs complètes */
+                            <Image
+                                src={file.url || file.filePath || ''}
+                                alt="Image téléchargée"
+                                className="w-full h-48 object-cover"
+                                onError={() => {
+                                    toast.error("Image not found. Please upload again.");
+                                    setFile({ filePath: null });
+                                    onFileChange("");
+                                }}
+                            />
+                        )}
+                        
+                        {/* Bouton de suppression */}
+                        <button
+                            type="button"
+                            onClick={handleRemoveImage}
+                            className="absolute top-2 right-2 bg-red-500 text-white rounded-full p-1 hover:bg-red-600 transition-colors"
+                        >
+                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        </button>
+                    </div>
+                )}
+            </div>
         </ImageKitProvider>
     );
 };

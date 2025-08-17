@@ -1,16 +1,32 @@
 "use client"
-import React from 'react'
+import React, { useState } from 'react'
 import { motion } from 'framer-motion'
 import { Button } from './ui/button'
 import Link from 'next/link'
 import { Badge } from './ui/badge'
 import { getCodeFil } from '@/lib/utils'
 import { Candidate } from '@/types'
+import VoteModal from './admin/voteModal' // Assurez-vous que le chemin est correct
+
 interface Props {
-    candidates : Candidate[]
+    candidates: Candidate[], 
+    prixUnitaire : number
 }
 
-const CandidatesSection = ({candidates} : Props) => {
+const CandidatesSection = ({ candidates , prixUnitaire }: Props) => {
+    const [voteModalOpen, setVoteModalOpen] = useState(false);
+    const [selectedCandidat, setSelectedCandidat] = useState<Candidate | null>(null);
+
+    const handleVoteClick = (candidate: Candidate) => {
+        setSelectedCandidat(candidate);
+        setVoteModalOpen(true);
+    };
+
+    const handleVoteModalClose = () => {
+        setVoteModalOpen(false);
+        setSelectedCandidat(null);
+    };
+
     const containerVariants = {
         hidden: { opacity: 0 },
         visible: {
@@ -38,7 +54,6 @@ const CandidatesSection = ({candidates} : Props) => {
         transition: { duration: 0.3 }
     };
 
-    
     return (
         <>
             <motion.div
@@ -77,7 +92,7 @@ const CandidatesSection = ({candidates} : Props) => {
                                 VOTER MAINTENANT
                             </Link>
                         </Button>
-                        <Button variant="outline" className='border border-secondary g:px-10 lg:py-8 px-9 py-4 lg:text-lg'>
+                        <Button variant="outline" className='border border-secondary lg:px-10 lg:py-8 px-9 py-4 lg:text-lg'>
                             <Link href="/candidates">
                                 PARTAGER
                             </Link>
@@ -85,6 +100,7 @@ const CandidatesSection = ({candidates} : Props) => {
                     </motion.div>
                 </div>
             </motion.div>
+            
             <section className="py-10 px-4">
                 <div className="flex flex-col px-1 mx-auto">
                     <motion.h2
@@ -118,7 +134,7 @@ const CandidatesSection = ({candidates} : Props) => {
                                 key={candidate.id}
                                 variants={itemVariants}
                                 whileHover={cardHover}
-                                className="relative cursor-pointer w-full h-[320px]  border-2 border-primary/30 rounded-2xl hover:shadow-[0_0_20px_rgba(255,215,0,0.3),0_0_40px_rgba(255,215,0,0.2),0_0_60px_rgba(255,215,0,0.1)]"
+                                className="relative cursor-pointer w-full h-[320px] border-2 border-primary/30 rounded-2xl hover:shadow-[0_0_20px_rgba(255,215,0,0.3),0_0_40px_rgba(255,215,0,0.2),0_0_60px_rgba(255,215,0,0.1)]"
                             >
                                 {/* Badge */}
                                 <Badge className='absolute top-4 right-4 z-20 bg-secondary'>
@@ -150,10 +166,17 @@ const CandidatesSection = ({candidates} : Props) => {
                                                 {candidate.nombreVotes}
                                             </p>
                                         </div>
-                                        <Button size="sm" className=''>
-                                            <Link href="/voter" className='font-extrabold text-sm text-neutral-950'>
+                                        <Button 
+                                            size="sm" 
+                                            className=''
+                                            onClick={(e) => {
+                                                e.preventDefault(); // Empêche la navigation si le bouton est dans un Link
+                                                handleVoteClick(candidate);
+                                            }}
+                                        >
+                                            <span className='font-extrabold text-sm text-neutral-950'>
                                                 VOTER
-                                            </Link>
+                                            </span>
                                         </Button>
                                     </div>
                                 </div>
@@ -162,6 +185,7 @@ const CandidatesSection = ({candidates} : Props) => {
                     </motion.div>
                 </div>
             </section>
+
             <motion.section
                 className="py-16 px-4 bg-gray-900"
                 initial={{ opacity: 0 }}
@@ -220,8 +244,17 @@ const CandidatesSection = ({candidates} : Props) => {
                     </motion.p>
                 </div>
             </motion.section>
-        </>
 
+            {/* VoteModal */}
+            {selectedCandidat && (
+                <VoteModal
+                    open={voteModalOpen}
+                    onOpenChange={handleVoteModalClose}
+                    candidat={selectedCandidat}
+                    prixParVote={prixUnitaire}
+                />
+            )}
+        </>
     )
 }
 

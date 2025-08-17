@@ -15,8 +15,8 @@ const poppins = Poppins({
 });
 
 export const metadata: Metadata = {
-  title: "Mon App Next.js",
-  description: "Une application avec Montserrat et Poppins",
+  title: "MissPigier",
+  description: "Application de vote en ligne MissPigier",
 };
 
 export default function RootLayout({

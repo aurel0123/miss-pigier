@@ -12,7 +12,11 @@ const Page = async () => {
             const response = await fetch(`${config.env.apiEndpoint}/api/Evenement/get`)
             if (response.ok) {
                 const data = await response.json()
-                return data[0]?.id
+                const event = data[0]
+                return {
+                    id : event?.id, 
+                    prixUnitaire : event?.prixUnitaireVote
+                }
             }
         } catch (error) {
             console.error('Erreur lors de la récupération de l\'événement:', error)
@@ -20,18 +24,19 @@ const Page = async () => {
         }
     }
     
-    const evenementId = await getCurrentEvent()
-    if (!evenementId) {
+    const evenement = await getCurrentEvent()
+    if (!evenement) {
         return <p>Impossible de charger les candidats : événement introuvable.</p>;
     }
     const listCandidates = await db
         .select()
         .from(candidates)
-        .where(eq(candidates.evenementId, evenementId))
+        .where(eq(candidates.evenementId, evenement.id))
     return (
         <>
             <CandidatesSection 
                 candidates={listCandidates}
+                prixUnitaire={evenement.prixUnitaire}
             />
         </>
     )
