@@ -33,12 +33,7 @@ const Page = async () => {
         .from(candidates)
         .where(eq(candidates.evenementId, evenement.id))
     return (
-        <>
-            <CandidatesSection 
-                candidates={listCandidates}
-                prixUnitaire={evenement.prixUnitaire}
-            />
-        </>
+        <CandidatesSection candidates={listCandidates} prixUnitaire={evenement.prixUnitaire} />
     )
 }
 

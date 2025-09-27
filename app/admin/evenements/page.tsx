@@ -57,7 +57,14 @@ const Page = () => {
       </div>
     )
   }
-
+  console.log(evenment);
+  if(evenment.length < 0 ){
+    return (
+      <div className="mt-10 flex flex-col items-center justify-center min-h-[400px]">
+        <p className="text-gray-600 mb-4">Aucun événement disponible.</p> 
+      </div>
+    )
+  }
   return (
     <div className="mt-10">
       <div className='flex flex-1 flex-row items-center space-x-2'>

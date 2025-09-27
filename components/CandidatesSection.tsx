@@ -250,8 +250,8 @@ const CandidatesSection = ({ candidates , prixUnitaire }: Props) => {
                 <VoteModal
                     open={voteModalOpen}
                     onOpenChange={handleVoteModalClose}
-                    candidat={selectedCandidat}
-                    prixParVote={prixUnitaire}
+                    candidate={selectedCandidat}
+                    prixVote={prixUnitaire}
                 />
             )}
         </>
