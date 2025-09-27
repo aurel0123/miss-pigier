@@ -47,7 +47,7 @@ export const paiements = pgTable("paiement", {
   id: uuid("id").primaryKey().notNull().defaultRandom().unique(),
   numeroTel: varchar("numero_tel", { length: 20 }).notNull(),
   montant: integer("montant").notNull(),
-  status: varchar("status_paiemen", { length: 20 }).default("pending"), // ou utilisez votre enum STATUS_PAIEMENT
+  status: STATUS_PAIEMENT("status").default("pending"), 
   moyenPaiement: varchar("moyen_paiement", { length: 50 }), // Ajouté
   fedapayTransactionId: varchar("fedapay_transaction_id", { length: 255 }), // Ajouté
   evenementId: uuid("evenement_id")

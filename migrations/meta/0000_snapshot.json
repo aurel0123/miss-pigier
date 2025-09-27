@@ -1,5 +1,5 @@
 {
-  "id": "d7ddb5aa-3455-4c6e-9121-709c489f156b",
+  "id": "dac2cb82-c4b8-4a13-87a4-4b16844c2dcc",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -337,9 +337,10 @@
           "primaryKey": false,
           "notNull": true
         },
-        "status_paiemen": {
-          "name": "status_paiemen",
-          "type": "varchar(20)",
+        "status": {
+          "name": "status",
+          "type": "status_paiement",
+          "typeSchema": "public",
           "primaryKey": false,
           "notNull": false,
           "default": "'pending'"

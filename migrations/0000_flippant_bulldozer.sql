@@ -51,7 +51,7 @@ CREATE TABLE "paiement" (
 	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"numero_tel" varchar(20) NOT NULL,
 	"montant" integer NOT NULL,
-	"status_paiemen" varchar(20) DEFAULT 'pending',
+	"status" "status_paiement" DEFAULT 'pending',
 	"moyen_paiement" varchar(50),
 	"fedapay_transaction_id" varchar(255),
 	"evenement_id" uuid NOT NULL,
