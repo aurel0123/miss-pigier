@@ -8,9 +8,9 @@ export async function POST(request: NextRequest) {
     const body = await request.json();
     console.log('🔄 Webhook FedaPay reçu:', JSON.stringify(body, null, 2));
 
-    const { entity, name } = body;
+    const { entity, event_types } = body;
 
-    if (name === 'transaction.approved') {
+    if (event_types === 'transaction.approved') {
       const transactionId = entity.id;
       const customMetadata = entity.custom_metadata;
       const paiementId = customMetadata?.paiement_id;
@@ -137,7 +137,7 @@ export async function POST(request: NextRequest) {
         }
       });
 
-    } else if (name === 'transaction.declined') {
+    } else if (event_types === 'transaction.declined') {
       const paiementId = entity.custom_metadata?.paiement_id;
       
       if (paiementId) {
@@ -169,11 +169,11 @@ export async function POST(request: NextRequest) {
       });
     }
 
-    console.log(`ℹ️ Événement non géré: ${name}`);
+    console.log(`ℹ️ Événement non géré: ${event_types}`);
     return NextResponse.json({ 
       success: false,
-      message: 'Événement reçu mais non traité', 
-      name 
+      message: 'Événement reçu mais non traité',
+        event_types
     });
 
   } catch (error) {

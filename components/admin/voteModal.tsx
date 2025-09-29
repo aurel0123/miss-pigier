@@ -150,7 +150,7 @@ const VoteModal = ({
                 // Fermer le modal et actualiser si nécessaire
                 handleClose(false);
                 // Vous pouvez ici déclencher une actualisation des données
-                //window.location.reload();
+                window.location.reload();
               }
             } catch (error) {
               console.error('Erreur lors de la vérification:', error);

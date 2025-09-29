@@ -67,7 +67,7 @@ export default function Page() {
             className="text-primary-foreground border-none focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:outline-none shadow-none placeholder:text-primary-foreground"
           />
         </div>
-        <Button>rechercher l&apos;évènement</Button>
+        <Button>rechercher une candidate</Button>
       </div>
       <div className="mt-10">
         <Candidates

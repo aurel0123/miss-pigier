@@ -137,7 +137,7 @@ export const adminSideBarLinks = [
     },
     {
         img:"/admin/credit-card.svg", 
-        path: "/credit-card", 
+        path: "/payement",
         text : "Payement"
     }
 ]
