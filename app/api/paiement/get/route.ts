@@ -1,12 +1,10 @@
 import {db} from '@/database/drizzle'
-import {paiements , votes} from '@/database/schema'
-import {eq} from "drizzle-orm";
+import {paiements } from '@/database/schema'
 
 export async function GET() {
     const paiement_and_votes = await db
         .select()
         .from(paiements)
-        .leftJoin(votes , eq(paiements.id , votes.paiementId))
 
     if (paiement_and_votes && paiement_and_votes.length > 0) {
         return new Response(JSON.stringify(paiement_and_votes, null, 2),
@@ -16,7 +14,7 @@ export async function GET() {
             }
             )
     }else {
-        return  new Response (JSON.stringify({message: 'Error pas de payement'}) ,
+        return  new Response (JSON.stringify({message: 'Error pas de payment'}) ,
             {
                 status : 404,
                 headers: { "Content-Type": "application/json" }
