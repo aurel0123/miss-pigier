@@ -9,11 +9,11 @@ import { Button } from "./ui/button";
 import { motion, AnimatePresence } from "framer-motion";
 import { AlignRight } from 'lucide-react';
 import { NavigationLink } from "@/types";
-
+import  {ArrowLeft , Share2 } from "lucide-react"
 
 interface Props {
     ChangeNavbar?: boolean,
-    Navigation: NavigationLink[]
+    Navigation?: NavigationLink[]
 }
 const menuVariants = {
     closed: { opacity: 0, height: 0, transition: { when: "afterChildren" } },
@@ -29,32 +29,59 @@ const linkVariants = {
     open: { opacity: 1, x: 0 },
 };
 
-const Header = ({ ChangeNavbar, Navigation }: Props) => {
+export const Header = ({ ChangeNavbar, Navigation }: Props) => {
     const pathname = usePathname();
     const [isOpen, setIsOpen] = useState(false);
+
+    const handleShare = () => {
+        const currentUrl = window.location.href;
+
+        if (navigator.share) {
+            navigator.share({
+                title: "Vote pour un candidat",
+                text: "Soutiens ton candidat préféré ici 👇",
+                url: currentUrl,
+            }).catch((error) => console.error("Erreur de partage", error));
+        } else {
+            // fallback vers WhatsApp
+            const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(
+                `Soutiens ton candidat ici 👇\n${currentUrl}`
+            )}`;
+            window.open(whatsappUrl, "_blank");
+        }
+    };
+
 
     if (ChangeNavbar === true) {
         return (
             <div className="w-full z-50 fixed top-0 left-0 right-0 border-b border-amber-400 bg-background/70 backdrop-blur-md">
                 <nav className="max-w-7xl mx-auto">
                     <ul className="flex flex-row gap-8 items-center justify-between p-6">
-                        {Navigation.map((link) => (
-                            <li key={link.href} className="flex flex-row gap-2 items-center">
-                                {/* Affiche l'icône s'il y en a une */}
-                                {link.icon && <link.icon className="w-4 h-4" />}
-                                <Link
-                                    href={link.href}
-                                    className={cn(
-                                        "text-base font-medium cursor-pointer hover:text-white transition-colors",
-                                        pathname === link.href
-                                            ? "text-neutral-100"
-                                            : "text-neutral-300"
-                                    )}
-                                >
-                                    {link.label}
-                                </Link>
-                            </li>
-                        ))}
+                        <li className="flex flex-row gap-2 items-center">
+                            {/* Affiche l'icône s'il y en a une */}
+                            <ArrowLeft className="w-4 h-4" />
+                            <Link
+                                href="/candidates"
+                                className={cn(
+                                    "text-base font-medium cursor-pointer hover:text-white transition-colors",
+                                )}
+                            >
+                                Retour
+                            </Link>
+                        </li>
+                        <li className="flex flex-row gap-2 items-center">
+                            {/* Affiche l'icône s'il y en a une */}
+                            <Share2 className="w-4 h-4" />
+                            <Link
+                                href=""
+                                onClick={handleShare}
+                                className={cn(
+                                    "text-base font-medium cursor-pointer hover:text-white transition-colors",
+                                )}
+                            >
+                                Partager
+                            </Link>
+                        </li>
                     </ul>
                 </nav>
             </div>
@@ -86,7 +113,7 @@ const Header = ({ ChangeNavbar, Navigation }: Props) => {
                 {/* Desktop nav */}
                 <nav className="hidden md:block">
                     <ul className="flex flex-row gap-8 items-center">
-                        {Navigation.map((link) => (
+                        {Navigation && Navigation.map((link) => (
                             <li key={link.href}>
                                 <Link
                                     href={link.href}
@@ -152,4 +179,4 @@ const Header = ({ ChangeNavbar, Navigation }: Props) => {
     );
 };
 
-export default Header;
+

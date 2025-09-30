@@ -5,7 +5,7 @@ import { Candidate } from "@/types";
 import { Card, CardContent } from "../ui/card";
 import Image from "next/image";
 import Link from "next/link";
-import { Edit, Eye, Trash2 } from "lucide-react";
+import { Edit, Eye, Trash2 , Share2 } from "lucide-react";
 import { Button } from "../ui/button";
 import ConfirmationDialog from "./confirmation-dialog";
 import { toast } from "sonner";
@@ -82,7 +82,7 @@ const Candidates = ({ candidates, onCandidatesUpdate }: Props) => {
                     {candidate.nombreVotes}
                   </TableCell>
                   <TableCell>
-                    <div className="flex space-x-2">
+                    <div className="flex flex-wrap gap-2">
                       <Button
                         asChild
                         size="sm"
@@ -100,7 +100,22 @@ const Candidates = ({ candidates, onCandidatesUpdate }: Props) => {
                       >
                         <Edit className="h-4 w-4" />
                       </Button>
-                      <ConfirmationDialog
+                        <Button
+                            size="sm"
+                            variant="outline"
+                            className="bg-white border-yellow-500 text-yellow-400 hover:bg-yellow-500 hover:text-black"
+                            onClick={() => {
+                                const voteLink = `${config.env.apiEndpoint}/candidates/${candidate.id}`;
+                                navigator.clipboard.writeText(voteLink);
+                                toast.success("Lien copié !", {
+                                    description: "Le lien de vote a été copié dans le presse-papier.",
+                                });
+                            }}
+                        >
+                            <Share2 className="h-4 w-4" />
+                        </Button>
+
+                        <ConfirmationDialog
                         trigger={
                             <Button
                                 size="sm"

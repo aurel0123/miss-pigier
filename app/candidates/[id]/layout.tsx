@@ -1,6 +1,6 @@
 "use client"
 import Footer from '@/components/Footer'
-import Header from '@/components/Header'
+import {Header} from '@/components/Header'
 import { navigationLink2 } from '@/constantes'
 import React, { ReactNode } from 'react'
 
@@ -9,8 +9,7 @@ const layout = ({children} : {children : ReactNode}) => {
         <main className='w-full'>
             <div className="max-w-7xl relative">
                 <Header 
-                    ChangeNavbar={true} 
-                    Navigation={navigationLink2}
+                    ChangeNavbar={true}
                 />
             </div>
             {children}

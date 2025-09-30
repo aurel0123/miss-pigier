@@ -94,6 +94,8 @@ const Page = () => {
                         <ResponsiveContainer width="100%" height={300}>
                             <BarChart data={stats}>
                                 <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
+                                <YAxis tick={{ fill: '#9CA3AF' }} />
+                                <Tooltip contentStyle={{ backgroundColor: '#1F2937', border: '1px solid #FCD34D' }} />
                                 <XAxis dataKey={(item) => `${item.nom}`} tick={{ fill: '#9CA3AF', fontSize: 12 }} />
                                 <Bar dataKey="nombreVotes" fill="#FCD34D" />
                             </BarChart>
