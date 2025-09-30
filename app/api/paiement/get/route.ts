@@ -1,3 +1,4 @@
+"use server"
 import {db} from '@/database/drizzle'
 import {paiements } from '@/database/schema'
 

@@ -52,7 +52,7 @@ const VoteModal = ({
         "Format invalide (ex: +229 XX XX XX XX XX ou XX XX XX XX XX)";
     }
 
-    if (nombreVote < 1 || nombreVote > 100) {
+    if (nombreVote < 1 ) {
       newErrors.nombreVote =
         "Le nombre de votes doit être supérieure à 1";
     }
@@ -166,6 +166,7 @@ const VoteModal = ({
       });
 
       // Ouvrir la boîte de dialogue de paiement
+        handleClose(false);
       widget.open();
 
     } catch (error) {
@@ -243,14 +244,9 @@ const VoteModal = ({
                     id="nombreVote"
                     type="number"
                     min={1}
-                    max={100}
                     value={nombreVote}
                     onChange={(e) => {
-                      const value = Math.max(
-                        1,
-                        Math.min(100, Number(e.target.value))
-                      );
-                      setNombreVote(value);
+                      setNombreVote(e.target.value);
                       if (errors.nombreVote) {
                         setErrors((prev) => ({ ...prev, nombreVote: "" }));
                       }
@@ -359,10 +355,10 @@ const VoteModal = ({
               </div>
               
               <div>
-                <p className="text-red-500 text-base font-bold">
+                <p className="text-red-500 text-sm font-bold">
                   Des frais de transaction peuvent être appliqués.
                 </p>
-                <p className="text-lg text-white ">
+                <p className="text-lg text-white text-base">
                   En cliquant sur &apos;Payer maintenant&apos;, une boîte de dialogue sécurisée s'ouvrira.
                 </p>
               </div>

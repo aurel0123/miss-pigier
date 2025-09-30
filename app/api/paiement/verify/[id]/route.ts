@@ -8,9 +8,9 @@ export async function GET(
   { params }: { params: { id: string } }
 ) {
   try {
-    const paiementId = params.id;
+      const { id } = await params
 
-    if (!paiementId) {
+    if (!id) {
       return NextResponse.json(
         { error: 'ID de paiement requis' },
         { status: 400 }
@@ -20,7 +20,7 @@ export async function GET(
     // Récupérer le paiement en base
     const [paiement] = await db.select()
       .from(paiements)
-      .where(eq(paiements.id, paiementId));
+      .where(eq(paiements.id, id));
 
     if (!paiement) {
       return NextResponse.json(
