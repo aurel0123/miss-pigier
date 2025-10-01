@@ -10,12 +10,13 @@ import { Candidate } from '@/types';
 
 interface Props {
     candidate: Candidate;
+    prixUnitaire: number;
 }
 
-const CandidatePageClient = ({ candidate }: Props) => {
+const CandidatePageClient = ({ candidate , prixUnitaire }: Props) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
 
-    const prixVote = 100; // ou récupère depuis un paramètre ou props si nécessaire
+
 
     return (
         <div className="pt-24 pb-16 px-4">
@@ -61,7 +62,7 @@ const CandidatePageClient = ({ candidate }: Props) => {
                 open={isModalOpen}
                 onOpenChange={setIsModalOpen}
                 candidate={candidate}
-                prixVote={prixVote}
+                prixVote={prixUnitaire}
             />
         </div>
     );
