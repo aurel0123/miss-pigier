@@ -56,55 +56,10 @@ const CandidatesSection = ({ candidates , prixUnitaire }: Props) => {
 
     return (
         <>
-            <motion.div
-                className="pt-24 pb-16 px-4 "
-                initial={{ opacity: 0, y: -50 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8 }}
-            >
-                <div className='flex flex-col gap-6 py-10 text-center'>
-                    <motion.h1
-                        className="text-2xl lg:text-6xl font-bold text-primary mb-4"
-                        initial={{ scale: 0.5 }}
-                        animate={{ scale: 1 }}
-                        transition={{ duration: 0.6, delay: 0.2 }}
-                    >
-                        Découvrez les candidates de MissPigier
-                    </motion.h1>
-                    <motion.p
-                        className="text-base text-white mb-8 max-w-3xl mx-auto"
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        transition={{ duration: 0.6, delay: 0.4 }}
-                    >
-                        Explorez les profils des participantes et soutenez votre candidate préférée. Chaque vote compte dans cette compétition passionnante !
-                    </motion.p>
-                    <motion.div
-                        className='flex lg:flex-row flex-col gap-4 justify-center'
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.6, delay: 0.6 }}
-                    >
-                        <Button
-                            className='font-semibold hover:bg-yellow-500 transition-colors lg:px-10 lg:py-8 px-9 py-4 lg:text-lg'
-                        >
-                            <Link href="/candidates">
-                                VOTER MAINTENANT
-                            </Link>
-                        </Button>
-                        <Button variant="outline" className='border border-secondary lg:px-10 lg:py-8 px-9 py-4 lg:text-lg'>
-                            <Link href="/candidates">
-                                PARTAGER
-                            </Link>
-                        </Button>
-                    </motion.div>
-                </div>
-            </motion.div>
-            
-            <section className="py-10 px-4">
+            <section className="py-10 px-4 mt-20">
                 <div className="flex flex-col px-1 mx-auto">
                     <motion.h2
-                        className="text-2xl md:text-4xl font-bold text-yellow-400 text-center mb-4"
+                        className="text-3xl lg:text-4xl font-bold text-yellow-400 text-center mb-4"
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.6 }}
@@ -113,7 +68,7 @@ const CandidatesSection = ({ candidates , prixUnitaire }: Props) => {
                         Découvrez les candidates de MissPigier
                     </motion.h2>
                     <motion.p
-                        className="text-center text-white mb-12 max-w-2xl mx-auto text-sm"
+                        className="text-center text-white mb-12 max-w-2xl mx-auto text-lg"
                         initial={{ opacity: 0 }}
                         whileInView={{ opacity: 1 }}
                         transition={{ duration: 0.6, delay: 0.2 }}
