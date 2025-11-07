@@ -167,7 +167,7 @@ const VoteModal = ({
           setIsLoading(false);
         }
       });
-
+      handleClose(false);
       widget.open();
 
     } catch (error) {

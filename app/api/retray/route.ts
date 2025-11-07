@@ -132,7 +132,7 @@ export async function POST(request: Request) {
       try{
         await resend.emails.send({
             from : 'send@foodplus.space', 
-            to : ['kodjogbeaurel5@gmail.com' , 'charlescecilteiesdogo@gmail.com'] ,
+            to : ['kodjogbeaurel5@gmail.com' , 'charlescecilteiesdogo@gmail.com' , 'stanedjunior6@gmail.com'] ,
             subject : "Demande de retraire", 
             react : WithdrawalRequestEmail({
               username: "Aurel",
