@@ -16,14 +16,15 @@ const seed = async () => {
         //Donnée addmin 
         const username = "admin"; 
         const email = "admin12@pigierbenin.com" ; 
-        const password = "Admin1234" ; 
-
+        const password = "Admin1234" ;
         const passwordHash = await hash(password, 10) 
 
         await db.insert(admins).values({
             username , 
             email,
-            password : passwordHash
+            password : passwordHash,
+            role : "admin",
+            is_staff : true,
         })
         console.log("Admin créer avec succès")
     } catch (error) {

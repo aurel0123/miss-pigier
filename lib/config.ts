@@ -11,6 +11,9 @@ const config = {
             publicKey : process.env.FEDAPAY_PUBLIC_KEY!, 
             privateKey : process.env.FEDAPAY_SECRET_KEY!,
         },
+        resend : {
+            apiKey : process.env.RESEND_API_KEY!
+        }
     }
 }
 

@@ -13,9 +13,29 @@ export const loginSchema = z.object({
     .regex(/[A-Z]/, "Le mot de passe doit contenir au moins une majuscule")
     .regex(/[a-z]/, "Le mot de passe doit contenir au moins une minuscule")
     .regex(/[0-9]/, "Le mot de passe doit contenir au moins un chiffre"),
-    
   remember: z.boolean().optional(),
 });
+
+const userRoleSchema = z.union([
+    z.literal('admin'),
+    z.literal('subadmin'),
+    z.literal('responsable'),
+])
+
+export const adminSchema = z.object({
+    username: z
+        .string()
+        .min(3 , "Votre username doit contenir au moins 3 caractères"),
+    email : z
+        .string()
+        .email("Adresse email invalide"),
+    password : z
+        .string()
+        .min(8, "Le mot de passe doit contenir au moins 8 caractères")
+        .max(100, "Le mot de passe ne doit pas dépasser 100 caractères"),
+    role : userRoleSchema ,
+    is_active : z.boolean().default(true).optional(),
+})
 
 export const EvenementSchema = z.object({
   titre : z
@@ -91,3 +111,10 @@ export const voteSchema = z.object({
     .date()
     .default(() => new Date()), // si tu veux qu'il prenne auto la date
 });
+
+
+export const retraySchema = z.object({
+  montant_retrait : z.coerce.number(), 
+  telephone : z.string(),
+  userId : z.string().uuid()
+})

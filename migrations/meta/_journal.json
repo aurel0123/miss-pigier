@@ -8,6 +8,62 @@
       "when": 1758980697455,
       "tag": "0000_flippant_bulldozer",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1761988618838,
+      "tag": "0001_stiff_stick",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1761990722661,
+      "tag": "0002_flashy_mephisto",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1762080453351,
+      "tag": "0003_motionless_avengers",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1762251648081,
+      "tag": "0004_absurd_power_pack",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1762361327531,
+      "tag": "0005_blue_lyja",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1762424110614,
+      "tag": "0006_exotic_puff_adder",
+      "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1762441144967,
+      "tag": "0007_talented_rawhide_kid",
+      "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1762539114453,
+      "tag": "0008_numerous_electro",
+      "breakpoints": true
     }
   ]
 }

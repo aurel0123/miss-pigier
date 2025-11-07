@@ -1,7 +1,6 @@
 "use server"
-import { signIn } from "@/auth";
+import { signIn , auth} from "@/auth";
 import { AuthCredentials } from "@/types";
-
 
 export const signInWithcredentials = async (params:AuthCredentials) => {
     const {email , password } = params 
@@ -12,13 +11,13 @@ export const signInWithcredentials = async (params:AuthCredentials) => {
             password,
             redirect: false
         })
-        console.log(result)
         if(result?.error) {
             return {success : false , error : result.error};
         }
-        return {success : true };
+        const session = await auth()
+        return {success : true , data:session?.user};
     } catch (error) {
         console.log(error , "Erreur lors de la connexion de l'utilisateur");
-        return {success : false , error : "Mots de passe ou email incorrect."};
+        return {success : false , error : "Mots de passe ou email incorrect. Ou votre compte est désactivé. Contacter l'administrateur"};
     }
 }

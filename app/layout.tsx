@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Montserrat , Poppins } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
+import { SearchProvider } from '@/context/search-provider'
 
 // Importer les polices avec les options souhaitées
 const montserrat = Montserrat({
@@ -29,8 +30,10 @@ export default function RootLayout({
       <body
         className={`${montserrat.className} ${poppins.variable} antialiased`}
       >
-        {children}
-        <Toaster/>
+        <SearchProvider>
+          {children}
+          <Toaster richColors position={'top-center'}/>
+        </SearchProvider>
       </body>
     </html>
   );

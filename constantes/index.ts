@@ -1,4 +1,4 @@
-import { ArrowLeft , Share2 } from "lucide-react"
+import {ArrowLeft, Calendar, Share2, LayoutDashboard , BanknoteArrowUp , Crown , Users, UserRoundCog , Settings ,Bell , Globe , Palette, Wallet} from "lucide-react"
 export const navigationLink = [
     {
         href : "/", 
@@ -137,7 +137,121 @@ export const adminSideBarLinks = [
     },
     {
         img:"/admin/credit-card.svg", 
-        path: "/admin/payment",
+        path: "/admin/transactions",
         text : "Payement"
     }
 ]
+
+export const dataNavigation = {
+    nav_admin : [
+        {
+            title : "General",
+            items : [
+                {
+                    title : "Tableau de bord",
+                    icon : LayoutDashboard,
+                    url : '/admin'
+                },
+                {
+                    title : "Evènements",
+                    icon : Calendar,
+                    url : "/admin/evenements"
+                },
+                {
+                    title: "Candidates",
+                    icon : Crown,
+                    url : "/admin/candidates"
+                },
+                {
+                    title : "Transactions",
+                    icon : BanknoteArrowUp,
+                    url : "/admin/transactions"
+                },
+                {
+                    title : "Utilisateurs",
+                    icon : Users,
+                    url: "/admin/users"
+                }
+            ]
+        }
+    ],
+    nav_subadmin : [
+        {
+            title : "General",
+            items : [
+                {
+                    title : "Tableau de bord",
+                    icon : LayoutDashboard,
+                    url : '/subadmin'
+                },
+                {
+                    title : "Evènements",
+                    icon : Calendar,
+                    url : "/subadmin/evenements"
+                },
+                {
+                    title : "Transactions",
+                    icon : Crown,
+                    url : "/subadmin/transactions"
+                },
+                {
+                    title : "Balances",
+                    icon : Wallet,
+                    url : "/subadmin/balances"
+                },
+            ]
+        }
+    ],
+    nav_responsable : [],
+    other_admin : [
+        {
+            title : "Paramètre",
+            isActive : false,
+            icon : Settings,
+            items : [
+                {
+                    title : "Profile",
+                    url : '/admin/settings',
+                    icon : UserRoundCog,
+                },
+                {
+                    title : "Apparences",
+                    url : "/admin/settings/apparences",
+                    icon : Palette,
+                },
+                {
+                    title : "Notifications",
+                    url : "/admin/settings/notifications",
+                    icon : Bell,
+                },
+                {
+                    title : "Site",
+                    url : "/admin/settings/site",
+                    icon : Globe,
+                },
+            ]
+        }
+    ],
+    other_subadmin : [
+        {
+            title : "Paramètre",
+            isActive : false,
+            icon : Settings,
+            items : [
+                {
+                    title : "Profile",
+                    url : "/subadmin/profile",
+                    icon : UserRoundCog,
+                },
+                {
+                    title : "Notifications",
+                    url : "/subadmin/notification",
+                    icon : Bell,
+                },
+            ]
+        }
+    ],
+    other_responsable : [],
+}
+
+export type DataNavigationKey = keyof typeof dataNavigation;

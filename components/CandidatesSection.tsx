@@ -68,7 +68,7 @@ const CandidatesSection = ({ candidates , prixUnitaire }: Props) => {
                         Découvrez les candidates de MissPigier
                     </motion.h2>
                     <motion.p
-                        className="text-center text-white mb-12 max-w-2xl mx-auto text-lg"
+                        className="text-center text-white mb-12 max-w-2xl mx-auto text-lg  "
                         initial={{ opacity: 0 }}
                         whileInView={{ opacity: 1 }}
                         transition={{ duration: 0.6, delay: 0.2 }}
@@ -78,7 +78,7 @@ const CandidatesSection = ({ candidates , prixUnitaire }: Props) => {
                     </motion.p>
 
                     <motion.div
-                        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl "
+                        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl m-auto"
                         variants={containerVariants}
                         initial="hidden"
                         whileInView="visible"

@@ -1,4 +1,7 @@
 import { LucideIcon } from "lucide-react";
+import {z} from 'zod'
+import {adminSchema} from "@/lib/validations";
+
 export interface Candidate{
     id: string , 
     nom : string , 
@@ -17,11 +20,21 @@ export interface NavigationLink {
     label: string;
     icon?: LucideIcon; // icon devient optionnel ici
 }
-
+export interface DataNavigationLink {
+    title: string;
+    isActive? : boolean,
+    icon?: LucideIcon,
+    items?: {
+        title: string;
+        icon? : LucideIcon;
+        url : string ;
+    }[]
+}
 export interface AuthCredentials {
     email : string , 
     password : string
 }
+
 export interface Evenement {
     id : string , 
     titre : string , 
@@ -30,7 +43,8 @@ export interface Evenement {
     prixUnitaireVote : number , 
     dateDebut : Date ,
     dateFin : Date , 
-    status : string , 
+    status : string ,
+    publish? : boolean ,
     createdAt : Date | null , 
 }
 
@@ -99,4 +113,16 @@ export interface WebhookPayload {
     updated_at: string;
   };
   event_type: string;
+}
+
+export type User = z.infer<typeof adminSchema>
+
+export interface Retray {
+  id: string ;
+  montant_retrait : string ; 
+  status : string ; 
+  telephone : number ; 
+  userId: string ;
+  date_creation : string ; 
+  date_aprobation : string ; 
 }

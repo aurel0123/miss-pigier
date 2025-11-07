@@ -54,7 +54,7 @@ export const Header = ({ ChangeNavbar, Navigation }: Props) => {
 
     if (ChangeNavbar === true) {
         return (
-            <div className="w-full z-50 fixed top-0 left-0 right-0 border-b border-amber-400 bg-background/70 backdrop-blur-md">
+            <div className="w-full z-50 fixed top-0 left-0 right-0 border-b border-amber-400 bg-black/70 backdrop-blur-md">
                 <nav className="max-w-7xl mx-auto">
                     <ul className="flex flex-row gap-8 items-center justify-between p-6">
                         <li className="flex flex-row gap-2 items-center">
@@ -88,7 +88,7 @@ export const Header = ({ ChangeNavbar, Navigation }: Props) => {
         )
     }
     return (
-        <header className="w-full z-50 fixed top-0 left-0 right-0 border-b border-amber-400 bg-background/70 backdrop-blur-md">
+        <header className="w-full z-50 fixed top-0 left-0 right-0 border-b border-amber-400 bg-black/70 backdrop-blur-md">
             <div className="max-w-7xl mx-auto flex flex-wrap items-center justify-between p-2 md:flex-nowrap">
                 {/* Logo */}
                 <Link href="/" className="flex items-center">

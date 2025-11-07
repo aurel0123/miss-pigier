@@ -24,6 +24,11 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           return null;
         }
 
+        //Verifier si l'utilisateur est active
+         if(user[0].is_active === false) {
+             return null;
+         }
+
         const isPassword = await compare(credentials.password.toString() , user[0].password)
         // You should return a user object with at least an id and name or email
         if(!isPassword){
@@ -32,8 +37,10 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         return {
           id : user[0].id, 
           name : user[0].username , 
-          email : user[0].email
-        }  as User; 
+          email : user[0].email,
+          role : user[0].role,
+          is_active : user[0].is_active
+        }  as User & {role : string ; is_active : boolean};
       }
       
     })
@@ -47,6 +54,8 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           token.id = user.id;
           token.email = user.email;
           token.name = user.name;
+          token.role = (user as any).role;
+          token.is_active = (user as any).is_active;
         }
         return token;
       },
@@ -55,6 +64,8 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         session.user.id = token.id as string;
         session.user.email = token.email as string;
         session.user.name = token.name as string;
+        (session.user as any).role = token.role;
+        (session.user as any).is_active = token.is_active;
       }
       return session;
     }

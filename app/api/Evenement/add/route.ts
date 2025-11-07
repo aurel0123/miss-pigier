@@ -3,10 +3,20 @@ import { NextResponse } from "next/server";
 import { db } from "@/database/drizzle";
 import { evenements } from "@/database/schema";
 import { EvenementSchema } from "@/lib/validations";
+import {auth} from '@/auth';
+import {determinePublishStatus} from '@/lib/helpers/helpers';
 
 export async function POST(request: Request) {
   try {
-    const json = await request.json();
+      // Verifier si l'utilisateur est connecter
+      const session = await auth();
+      if (!session?.user) {
+          return NextResponse.json(
+              { success: false, error: "Non autorisé : veuillez vous connecter." },
+              { status: 401 }
+          );
+      }
+     const json = await request.json();
 
     // Validation des données reçues
     const parsed = EvenementSchema.parse({
@@ -15,6 +25,8 @@ export async function POST(request: Request) {
       date_debut: json.date_debut ? new Date(json.date_debut) : undefined,
       date_fin: json.date_fin ? new Date(json.date_fin) : undefined,
     });
+
+    const publishStatus = await determinePublishStatus();
 
     // Insertion dans la base de données
     const result = await db
@@ -26,6 +38,7 @@ export async function POST(request: Request) {
         prixUnitaireVote: parsed.prix_unitaire,
         dateDebut: parsed.date_debut,
         dateFin: parsed.date_fin,
+          publish : publishStatus,
         // status par défaut pris en base
       })
       .returning();

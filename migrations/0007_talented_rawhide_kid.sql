@@ -1,0 +1,1 @@
+ALTER TABLE "retray" ALTER COLUMN "status" SET DEFAULT 'en cour';

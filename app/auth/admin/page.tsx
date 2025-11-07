@@ -32,10 +32,11 @@ const Page = () => {
     })
     async function onSubmit(values: z.infer<typeof loginSchema>) {
         const result = await signInWithcredentials(values)
+
         if(result.success){
             toast.success("Success" , {
                 description: "Connexion réussi"
-            }) ; 
+            }) ;
             router.push("/admin");
         }else{
             toast.error("Error d'authentification : ", {
@@ -53,7 +54,7 @@ const Page = () => {
             </div>
             <Card className='w-full max-w-md bg-neutral-900 border-primary/30 backdrop-blur-sm'>
                 <CardHeader>
-                    <CardTitle className="text-2xl font-bold text-secondary">Espace Administrateur</CardTitle>
+                    <CardTitle className="text-2xl font-bold text-primary">Espace Administrateur</CardTitle>
                     <CardDescription className="text-gray-300">
                         Connectez-vous pour accéder au dashboard admin
                     </CardDescription>
@@ -66,11 +67,11 @@ const Page = () => {
                             name="email"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Email</FormLabel>
+                                    <FormLabel className={'text-white'}>Email</FormLabel>
                                     <FormControl>
                                         <Input 
                                             placeholder="name@gmail.com" {...field} 
-                                            className="border-input placeholder:text-muted-foreground focus-visible:ring-ring flex h-10 w-full rounded-md border bg-transparent px-3 py-2 text-sm shadow-xs transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium focus-visible:ring-1 focus-visible:outline-hidden disabled:cursor-not-allowed disabled:opacity-50"
+                                            className="border-input text-white placeholder:text-white focus-visible:ring-ring flex h-10 w-full rounded-md border bg-transparent px-3 py-2 text-sm shadow-xs transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium focus-visible:ring-1 focus-visible:outline-hidden disabled:cursor-not-allowed disabled:opacity-50"
                                         />
                                     </FormControl>
                                     <FormMessage />
@@ -82,7 +83,7 @@ const Page = () => {
                             name="password"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Password</FormLabel>
+                                    <FormLabel className={'text-white'}>Password</FormLabel>
                                     <FormControl>
                                         <PasswordInput placeholder="*********" {...field} />
                                     </FormControl>
@@ -107,7 +108,7 @@ const Page = () => {
                                 </FormItem>
                             )}
                             />
-                            <Button type="submit">Submit</Button>
+                            <Button type="submit" variant={'default'}>Submit</Button>
                         </form>
                     </Form>
                 </CardContent>

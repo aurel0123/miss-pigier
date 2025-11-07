@@ -15,7 +15,7 @@ export async function GET() {
             }
             )
     }else {
-        return  new Response (JSON.stringify({message: 'Error pas de payment'}) ,
+        return  new Response (JSON.stringify({message: 'Error pas de transactions'}) ,
             {
                 status : 404,
                 headers: { "Content-Type": "application/json" }

@@ -1,6 +1,6 @@
 "use client";
 import { Candidate } from "@/types";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "../ui/dialog";
 import { Label } from "../ui/label";
 import { Input } from "../ui/input";
@@ -39,6 +39,13 @@ const VoteModal = ({
   const [isLoading, setIsLoading] = useState(false);
   const [fedaPayLoaded, setFedaPayLoaded] = useState(false);
 
+  // Vérifier si FedaPay est déjà chargé
+  useEffect(() => {
+    if (typeof window !== "undefined" && window.FedaPay) {
+      setFedaPayLoaded(true);
+    }
+  }, [open]); // Re-vérifier quand le modal s'ouvre
+
   const montantTotal = prixVote * nombreVote;
   
   const validateForm = () => {
@@ -52,9 +59,8 @@ const VoteModal = ({
         "Format invalide (ex: +229 XX XX XX XX XX ou XX XX XX XX XX)";
     }
 
-    if (nombreVote < 1 ) {
-      newErrors.nombreVote =
-        "Le nombre de votes doit être supérieure à 1";
+    if (nombreVote < 1) {
+      newErrors.nombreVote = "Le nombre de votes doit être supérieur à 0";
     }
 
     setErrors(newErrors);
@@ -68,6 +74,7 @@ const VoteModal = ({
       setNumeroTelephone("");
       setErrors({});
       setIsLoading(false);
+      // Ne pas réinitialiser fedaPayLoaded ici car le script reste chargé
     }
     onOpenChange(isOpen);
   };
@@ -83,7 +90,8 @@ const VoteModal = ({
   };
 
   const handlePayment = async () => {
-    if (!fedaPayLoaded) {
+    // Vérifier d'abord si FedaPay est disponible globalement
+    if (typeof window === "undefined" || !window.FedaPay) {
       alert("Le système de paiement est en cours de chargement. Veuillez patienter.");
       return;
     }
@@ -128,28 +136,24 @@ const VoteModal = ({
         customer: {
           phone_number: {
             number: numeroTelephone,
-            country: 'BJ' // Code pays pour le Bénin
+            country: 'BJ'
           }
         },
         currency: {
-          iso: 'XOF' // Franc CFA
+          iso: 'XOF'
         },
         onComplete: async ({ reason, transaction }) => {
           console.log('Résultat du paiement:', { reason, transaction });
           
           if (reason === window.FedaPay.CHECKOUT_COMPLETED) {
-            // Paiement réussi
             alert('Paiement effectué avec succès ! Vos votes ont été comptabilisés.');
             
-            // Optionnel: vérifier le statut côté serveur
             try {
               const verificationResponse = await fetch(`/api/paiement/verify/${paiementData.paiementId}`);
               const verificationData = await verificationResponse.json();
               
               if (verificationData.success) {
-                // Fermer le modal et actualiser si nécessaire
                 handleClose(false);
-                // Vous pouvez ici déclencher une actualisation des données
                 window.location.reload();
               }
             } catch (error) {
@@ -157,7 +161,6 @@ const VoteModal = ({
             }
             
           } else if (reason === window.FedaPay.DIALOG_DISMISSED) {
-            // Paiement annulé par l'utilisateur
             console.log('Paiement annulé par l\'utilisateur');
           }
           
@@ -165,8 +168,6 @@ const VoteModal = ({
         }
       });
 
-      // Ouvrir la boîte de dialogue de paiement
-        handleClose(false);
       widget.open();
 
     } catch (error) {
@@ -178,7 +179,7 @@ const VoteModal = ({
 
   return (
     <>
-      {/* Chargement du script FedaPay */}
+      {/* Chargement du script FedaPay - seulement une fois */}
       <Script
         src="https://cdn.fedapay.com/checkout.js?v=1.1.7"
         onLoad={() => {
@@ -191,7 +192,7 @@ const VoteModal = ({
       />
 
       <Dialog open={open} onOpenChange={handleClose}>
-        <DialogContent className="w-full max-w-md sm:max-w-lg md:max-w-2xl lg:max-w-3xl p-4 sm:p-6">
+        <DialogContent className="w-full max-w-md sm:max-w-lg md:max-w-2xl lg:max-w-3xl p-4 sm:p-6 bg-black">
           <DialogHeader className="mb-4">
             <DialogTitle className="text-lg sm:text-xl">
               Voter pour {candidate.nom} {candidate.prenom}
@@ -246,7 +247,8 @@ const VoteModal = ({
                     min={1}
                     value={nombreVote}
                     onChange={(e) => {
-                      setNombreVote(e.target.value);
+                      const value = parseInt(e.target.value);
+                      setNombreVote(isNaN(value) ? 1 : value);
                       if (errors.nombreVote) {
                         setErrors((prev) => ({ ...prev, nombreVote: "" }));
                       }
@@ -273,7 +275,6 @@ const VoteModal = ({
                 </div>
               </div>
 
-              {/* Image du candidat */}
               <div className="flex flex-col items-center justify-center gap-3 order-1 md:order-2">
                 <div className="relative w-32 h-32 sm:w-48 sm:h-48 md:w-56 md:h-56 lg:w-64 lg:h-64 rounded-xl overflow-hidden">
                   <Image
@@ -358,8 +359,8 @@ const VoteModal = ({
                 <p className="text-red-500 text-sm font-bold">
                   Des frais de transaction peuvent être appliqués.
                 </p>
-                <p className="text-lg text-white text-base">
-                  En cliquant sur &apos;Payer maintenant&apos;, une boîte de dialogue sécurisée s'ouvrira.
+                <p className=" text-white text-base">
+                  En cliquant sur &apos;Payer maintenant&apos;, une boîte de dialogue sécurisée s&apos;ouvrira.
                 </p>
               </div>
             </div>
@@ -369,7 +370,7 @@ const VoteModal = ({
             <div className="order-2 sm:order-1">
               {step > 1 && (
                 <Button
-                  variant="outline"
+                  variant="ghost"
                   onClick={() => setStep(step - 1)}
                   className="text-sm sm:text-base px-3 sm:px-4"
                   disabled={isLoading}
@@ -400,9 +401,9 @@ const VoteModal = ({
                 <Button
                   className="bg-primary hover:bg-primary/90 text-sm sm:text-base px-3 sm:px-4 w-full sm:w-auto"
                   onClick={handlePayment}
-                  disabled={isLoading || !fedaPayLoaded}
+                  disabled={isLoading}
                 >
-                  {isLoading ? "Traitement..." : !fedaPayLoaded ? "Chargement..." : "Payer maintenant"}
+                  {isLoading ? "Traitement..." : "Payer maintenant"}
                 </Button>
               )}
             </div>

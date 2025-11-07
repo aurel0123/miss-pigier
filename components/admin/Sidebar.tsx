@@ -14,8 +14,8 @@ import signOutAction from '@/lib/actions/signOut'
 export default function Sidebar({session} : {session : Session}) {
     const pathname = usePathname()
     return (
-        <div className='adminSidebar'>
-            <div>
+        <div className='adminSidebar '>
+            <div className="">
                 <Link href='/' className="logo">
                     <Image
                         src="/images/Logo.png"
@@ -93,7 +93,6 @@ export default function Sidebar({session} : {session : Session}) {
                     </DropdownMenuItem>
                 </DropdownMenuContent>
             </DropdownMenu>
-               
         </div>
     )
 }

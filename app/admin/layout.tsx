@@ -1,12 +1,21 @@
-import Sidebar from '@/components/admin/Sidebar'
+
 import React, { ReactNode } from 'react'
 import '@/styles/admin.css'
-import Header from '@/components/admin/Header'
 import { auth } from '@/auth'
 import { redirect } from 'next/navigation'
 import { db } from '@/database/drizzle'
 import { admins } from '@/database/schema'
 import { eq } from 'drizzle-orm'
+import {
+    SidebarInset,
+    SidebarProvider,
+    SidebarTrigger,
+} from "@/components/ui/sidebar"
+import AppSidebar from '@/components/layout/app-sidebar';
+import {Separator} from "@/components/ui/separator";
+import {Main} from '@/components/layout/main';
+import {Search} from "@/components/search";
+
 
 const layout = async ({children} : {children : ReactNode}) => {
     const session = await auth(); 
@@ -19,14 +28,29 @@ const layout = async ({children} : {children : ReactNode}) => {
     if(isConnect.length == 0) {
         redirect('/')
     }
+    const role = isConnect[0].role
+    if (!role) redirect("/");
     return (
-        <main className='flex min-h-screen w-full flex-row'>
-            <Sidebar session={session}/>
-            <div className='adminContainer bg-content'>
-                <Header session = {session}/>
-                {children}
-            </div>
-        </main>
+        <SidebarProvider className={'bg'}>
+            <AppSidebar
+                session={session}
+                role={role}
+            />
+            <SidebarInset>
+                <header className="flex h-16 shrink-0 items-center gap-2 border-b border-neutral-200">
+                    <div className="flex items-center gap-2 px-3">
+                        <SidebarTrigger className={'text-neutral-800 size-10'}/>
+                        <Separator orientation="vertical" className="mr-2 h-4" />
+                        <div>
+                            <Search/>
+                        </div>
+                    </div>
+                </header>
+                <Main>
+                    {children}
+                </Main>
+            </SidebarInset>
+        </SidebarProvider>
     )
 }
 

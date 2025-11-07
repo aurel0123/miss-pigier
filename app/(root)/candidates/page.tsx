@@ -10,14 +10,15 @@ const Page = async () => {
     const getCurrentEvent = async () => {
         try {
             const response = await fetch(`${config.env.apiEndpoint}/api/Evenement/get`)
-            if (response.ok) {
-                const data = await response.json()
-                const event = data[0]
+            const data = await response.json();
+            if (data.success) {
+                const event =  data.evenements[0];
                 return {
-                    id : event?.id, 
+                    id : event?.id,
                     prixUnitaire : event?.prixUnitaireVote
                 }
             }
+
         } catch (error) {
             console.error('Erreur lors de la récupération de l\'événement:', error)
             return null

@@ -1,0 +1,2 @@
+ALTER TABLE "notification" ADD COLUMN "payment_id" uuid;--> statement-breakpoint
+ALTER TABLE "notification" ADD CONSTRAINT "notification_payment_id_retray_id_fk" FOREIGN KEY ("payment_id") REFERENCES "public"."retray"("id") ON DELETE no action ON UPDATE no action;
