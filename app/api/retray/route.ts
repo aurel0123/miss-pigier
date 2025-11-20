@@ -286,7 +286,7 @@ export async function PATCH(request: Request) {
       try {
         await resend.emails.send({
           from: "notifications@foodplus.space", // Remplacez par votre email vérifié
-          to: ['kodjogbeaurel4@gmail.com'] /* remplacer par  user.email l'email de la personne qui a fais la demande*/,
+          to: ['kodjogbeaurel4@gmail.com' , user.email , "stanedjunior6@gmail.com" , 'stanedjunior6@gmail.com'] /* remplacer par  user.email l'email de la personne qui a fais la demande*/,
           subject: "Demande de retrait approuvée",
           html: `
             <div style="font-family: Arial, sans-serif; padding: 20px;">
