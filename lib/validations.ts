@@ -119,3 +119,39 @@ export const retraySchema = z.object({
   telephone : z.string(),
   userId : z.string().uuid()
 })
+
+export const CreateSubadminSchema = z.object({
+  username: z.string().min(1, "Username obligatoire"),
+  email: z.string().email("Email invalide"),
+  // tu peux réutiliser les règles de ton form côté client si tu veux
+  password: z
+    .string()
+    .min(8, "Le mot de passe doit contenir au moins 8 caractères")
+    .regex(/[a-z]/, "Le mot de passe doit contenir au moins une minuscule")
+    .regex(/\d/, "Le mot de passe doit contenir au moins un chiffre"),
+  // on force ici le rôle à 'subadmin' par sécurité
+  role: z.literal("subadmin").default("subadmin"),
+});
+
+export const AdminUpdatePasswordSchema = z.object({
+  password: z
+    .string()
+    .min(8, "Le mot de passe doit contenir au moins 8 caractères")
+    .regex(/[a-z]/, "Le mot de passe doit contenir au moins une minuscule")
+    .regex(/\d/, "Le mot de passe doit contenir au moins un chiffre"),
+});
+
+
+export const adminProfileSchema = z.object({
+  username: z.string().min(1, "Le nom d'utilisateur est obligatoire"),
+  email: z.string().email("Email invalide"),
+  // password optionnel : vide = pas de changement
+  password: z
+    .string()
+    .optional()
+    .or(z.literal("")) // permet "" sans erreur
+    .refine(
+      (val) => !val || val.length >= 8,
+      { message: "Le mot de passe doit contenir au moins 8 caractères" }
+    ),
+});
