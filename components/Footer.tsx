@@ -18,29 +18,20 @@ const Footer = () => {
                             />
                         </div>
                         <ul className='flex flex-col lg:flex-row md:flex-col items-center gap-4'>
-                            <li>
-                                <Link href="/Contact" className='text-neutral-500'>
-                                    Contactez-nous
-                                </Link>
-                            </li>
+                            
                             <li>
                                 <Link href="/candidates" className='text-neutral-500'>
                                     Candidates
                                 </Link>
                             </li>
                             <li>
-                                <Link href="/about" className='text-neutral-500'>
+                                <Link href="/auth/admin/" className='text-neutral-500'>
+                                    Espace gestionnaire
+                                </Link>
+                            </li>
+                            <li>
+                                <Link href="/a-propos" className='text-neutral-500'>
                                     A propos 
-                                </Link>
-                            </li>
-                            <li>
-                                <Link href="/support" className='text-neutral-500'>
-                                    Support
-                                </Link>
-                            </li>
-                            <li>
-                                <Link href="/fq" className='text-neutral-500'>
-                                    FQ
                                 </Link>
                             </li>
                         </ul>
@@ -52,18 +43,8 @@ const Footer = () => {
                         </p>
                         <ul className="flex flex-col gap-2 lg:flex-row md:flex-row">
                             <li>
-                                <Link href="" className='text-neutral-500 underline'>
-                                    Politique de confidentialité
-                                </Link>
-                            </li>
-                            <li>
-                                <Link href="" className='text-neutral-500 underline'>
-                                    Paramètres des cookies
-                                </Link>
-                            </li>
-                            <li>
-                                <Link href="" className='text-neutral-500 underline'>
-                                    Conditions d&apos;utilisation
+                                <Link href="/mentions-legales" className='text-neutral-500 underline'>
+                                    Mentions légales
                                 </Link>
                             </li>
                         </ul>

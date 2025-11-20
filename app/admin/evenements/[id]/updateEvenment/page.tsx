@@ -19,7 +19,7 @@ import ImageUpload from "@/components/imageUpload";
 import { toast } from "sonner";
 import config from "@/lib/config";
 import { useParams, useRouter } from "next/navigation";
-import { Ring2 } from 'ldrs/react';
+import { Ring2 } from "ldrs/react";
 
 const EditEvenementPage = () => {
   const params = useParams();
@@ -37,6 +37,7 @@ const EditEvenementPage = () => {
       prix_unitaire: 0,
       date_debut: new Date(),
       date_fin: new Date(),
+      commissions: 0,
     },
   });
 
@@ -44,30 +45,33 @@ const EditEvenementPage = () => {
   const loadEventData = async () => {
     try {
       setLoading(true);
-      const response = await fetch(`${config.env.apiEndpoint}api/Evenement/get/${id}`);
-      
+      const response = await fetch(
+        `${config.env.apiEndpoint}api/Evenement/get/${id}`
+      );
+
       if (!response.ok) {
-        throw new Error('Événement non trouvé');
+        throw new Error("Événement non trouvé");
       }
 
       const data = await response.json();
       if (data.success) {
-        const event = data.data;
+        const event = data.data; // ⬅️ au lieu de data.data
         form.reset({
           titre: event.titre || "",
           description: event.description || "",
           image: event.image || "",
           prix_unitaire: event.prixUnitaireVote || 0,
-          date_debut: event.dateDdebut ? new Date(event.dateDdebut) : new Date(),
+          date_debut: event.dateDebut ? new Date(event.dateDebut) : new Date(),
           date_fin: event.dateFin ? new Date(event.dateFin) : new Date(),
+          commissions: event.commissions ?? 0, // ⬅️ à ajouter
         });
       } else {
-        throw new Error(data.error || 'Erreur lors du chargement');
+        throw new Error(data.error || "Erreur lors du chargement");
       }
     } catch (error) {
-      console.error('Erreur:', error);
-      toast.error('Erreur lors du chargement de l\'événement');
-      router.push('/admin/evenements');
+      console.error("Erreur:", error);
+      toast.error("Erreur lors du chargement de l'événement");
+      router.push("/admin/evenements");
     } finally {
       setLoading(false);
     }
@@ -81,29 +85,34 @@ const EditEvenementPage = () => {
 
   const onSubmit = async (values: z.infer<typeof EvenementSchema>) => {
     try {
-        console.log(values)
+      console.log(values);
       setSubmitting(true);
-      const response = await fetch(`${config.env.apiEndpoint}api/Evenement/update/${id}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(values),
-      });
+      const response = await fetch(
+        `${config.env.apiEndpoint}api/Evenement/update/${id}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(values),
+        }
+      );
 
       const data = await response.json();
 
       if (!response.ok || !data.success) {
-        console.error('Erreur lors de la mise à jour:', data.error);
-        toast.error('Erreur lors de la mise à jour : ' + (data.error || 'Erreur inconnue'));
+        console.error("Erreur lors de la mise à jour:", data.error);
+        toast.error(
+          "Erreur lors de la mise à jour : " + (data.error || "Erreur inconnue")
+        );
         return;
       }
 
-      toast.success('Événement mis à jour avec succès !');
-      router.push('/admin/evenements');
+      toast.success("Événement mis à jour avec succès !");
+      router.push("/admin/evenements");
     } catch (error) {
-      console.error('Erreur réseau ou serveur:', error);
-      toast.error('Erreur réseau ou serveur lors de la mise à jour.');
+      console.error("Erreur réseau ou serveur:", error);
+      toast.error("Erreur réseau ou serveur lors de la mise à jour.");
     } finally {
       setSubmitting(false);
     }
@@ -130,8 +139,12 @@ const EditEvenementPage = () => {
   return (
     <div className="mt-10">
       <div className="mb-6">
-        <h1 className="text-2xl font-bold text-gray-900">Modifier l&apos;événement</h1>
-        <p className="text-gray-600">Modifiez les informations de votre événement</p>
+        <h1 className="text-2xl font-bold text-gray-900">
+          Modifier l&apos;événement
+        </h1>
+        <p className="text-gray-600">
+          Modifiez les informations de votre événement
+        </p>
       </div>
 
       <Form {...form}>
@@ -260,6 +273,26 @@ const EditEvenementPage = () => {
                 )}
               />
             </div>
+            <div className="flex flex-col space-y-4">
+              <FormField
+                control={form.control}
+                name="commissions"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Commission en %</FormLabel>
+                    <FormControl>
+                      <Input
+                        type="text"
+                        placeholder="Entrer le pourcentage de commission"
+                        {...field}
+                        className="text-primary-foreground col-span-3 border-primary rounded-md [&:focus]:outline-none [&:focus]:ring-0 [&:focus]:border-primary py-6"
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
             <FormField
               control={form.control}
               name="image"
@@ -274,19 +307,16 @@ const EditEvenementPage = () => {
               )}
             />
             <div className="flex gap-4">
-              <Button 
+              <Button
                 type="button"
                 className="text-white bg-neutral-950 hover:bg-neutral-950"
-                onClick={() => router.push('/admin/evenements')}
+                onClick={() => router.push("/admin/evenements")}
                 disabled={submitting}
               >
                 Annuler
               </Button>
-              <Button 
-                type="submit" 
-                disabled={submitting}
-              >
-                {submitting ? 'Mise à jour...' : 'Mettre à jour l\'événement'}
+              <Button type="submit" disabled={submitting}>
+                {submitting ? "Mise à jour..." : "Mettre à jour l'événement"}
               </Button>
             </div>
           </div>

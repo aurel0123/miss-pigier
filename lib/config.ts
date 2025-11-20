@@ -13,6 +13,10 @@ const config = {
         },
         resend : {
             apiKey : process.env.RESEND_API_KEY!
+        } , 
+        redis : {
+            restUrl : process.env.UPSTASH_REDIS_REST_URL!,
+            restToken : process.env.UPSTASH_REDIS_REST_TOKEN!,
         }
     }
 }

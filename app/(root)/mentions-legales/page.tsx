@@ -1,0 +1,180 @@
+"use client";
+import React from "react";
+import { motion } from "framer-motion";
+import { Scale, Shield, FileText, Mail, Phone, MapPin } from "lucide-react";
+
+const MentionsLegales = () => {
+  const sections = [
+    {
+      icon: FileText,
+      title: "1. Éditeur du site",
+      content: `Le présent site est édité par Ulmann Service, entreprise spécialisée dans la vente de données mobiles et création de service numérique possédant un registre de commerce et un numéro par l'État. Ulmann Service est dûment enregistrée au Registre du Commerce.
+
+Adresse : [Adresse de l'entreprise]
+Téléphone : +229 01 50 95 74 80
+Email : ulmannazeligui@gmail.com
+Responsable de la publication : [Nom du responsable]`,
+    },
+    {
+      icon: Shield,
+      title: "2. Objet du site",
+      content: `Ulmann Service propose, entre autres services numériques, la conception et la mise en place de sites web destinés aux votes en ligne. Le présent site est développé pour le compte de structures, universités ou organisations souhaitant organiser un concours ou une élection interne.`,
+    },
+    {
+      icon: FileText,
+      title: "3. Hébergement",
+      content: `Le site est hébergé par : [NOM DE L'HÉBERGEUR]
+Adresse : [Adresse de l'hébergeur]
+Site web : [URL de l'hébergeur]`,
+    },
+    {
+      icon: Scale,
+      title: "4. Propriété intellectuelle",
+      content: `L'ensemble des éléments composant ce site (textes, images, logos, graphiques, contenus, interfaces, structure) est protégé par la législation en vigueur. Toute reproduction, représentation ou exploitation partielle ou totale, sans autorisation préalable d'Ulmann Service, est strictement interdite.`,
+    },
+    {
+      icon: Shield,
+      title: "5. Données personnelles",
+      content: `Dans le cadre du fonctionnement du site (inscriptions, gestion des votes, sécurité), certaines données personnelles peuvent être collectées. Ces données sont utilisées uniquement pour :
+
+• Assurer le bon déroulement du concours
+• Garantir la sécurité et la validité des votes
+• Prévenir les fraudes
+• Gérer la participation des candidats et des utilisateurs
+
+Les données ne sont ni revendues, ni partagées à des tiers non autorisés. Conformément aux réglementations applicables, chaque utilisateur dispose d'un droit d'accès, de rectification et de suppression.
+
+Pour toute demande : ulmannazeligui@gmail.com`,
+    },
+    {
+      icon: FileText,
+      title: "6. Cookies",
+      content: `Le site peut utiliser des cookies techniques et analytiques permettant d'assurer son bon fonctionnement. L'utilisateur peut configurer ses préférences via les paramètres de son navigateur.`,
+    },
+    {
+      icon: Shield,
+      title: "7. Responsabilité",
+      content: `Ulmann Service s'engage à fournir des services fiables et sécurisés, mais ne saurait être tenue responsable :
+
+• D'interruptions temporaires du service
+• De problèmes liés au réseau internet
+• De comportements frauduleux émanant d'utilisateurs ou de tiers
+• De l'utilisation non conforme du site
+
+Ulmann Service se réserve le droit d'annuler tout vote suspect ou identifié comme frauduleux.`,
+    },
+    {
+      icon: FileText,
+      title: "8. Modification des mentions légales",
+      content: `Les présentes mentions peuvent être modifiées à tout moment. L'utilisateur est invité à les consulter régulièrement.`,
+    },
+  ];
+
+  return (
+    <div className="">
+      <div className="container mx-auto max-w-5xl mt-20">
+        {/* Header */}
+        <motion.div
+          className="text-center mb-16"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+        >
+          <h1 className="text-4xl md:text-5xl font-bold text-primary mb-4">
+            Mentions Légales
+          </h1>
+          <p className="text-gray-400 text-lg max-w-2xl mx-auto">
+            Informations légales relatives à l&apos;utilisation du site Ulmann
+            Service
+          </p>
+        </motion.div>
+
+        {/* Sections */}
+        <div className="space-y-6 mb-12">
+          {sections.map((section, index) => (
+            <motion.div
+              key={index}
+              className="bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 md:p-8 border border-primary/20 hover:border-primary/40 transition-all duration-300"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: index * 0.1 }}
+              viewport={{ once: true }}
+            >
+              <div className="flex items-start gap-4">
+                <div className="bg-primary/10 p-3 rounded-lg flex-shrink-0">
+                  <section.icon size={24} className="text-primary" />
+                </div>
+                <div className="flex-1">
+                  <h2 className="text-xl md:text-2xl font-bold text-white mb-4">
+                    {section.title}
+                  </h2>
+                  <div className="text-gray-300 whitespace-pre-line leading-relaxed">
+                    {section.content}
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+
+        {/* Contact Section */}
+        <motion.div
+          className="bg-gradient-to-r from-primary/20 to-secondary/20 rounded-xl p-8 border border-primary/30"
+          initial={{ opacity: 0, scale: 0.95 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.5 }}
+          viewport={{ once: true }}
+        >
+          <h2 className="text-2xl font-bold text-white mb-6 text-center">
+            Contact
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="flex flex-col items-center text-center">
+              <Mail className="text-primary mb-3" size={32} />
+              <p className="text-sm text-gray-400 mb-2">Email</p>
+              <a
+                href="mailto:ulmannazeligui@gmail.com"
+                className="text-primary hover:text-secondary transition-colors font-medium"
+              >
+                ulmannazeligui@gmail.com
+              </a>
+            </div>
+            <div className="flex flex-col items-center text-center">
+              <Phone className="text-primary mb-3" size={32} />
+              <p className="text-sm text-gray-400 mb-2">Téléphone</p>
+              <a
+                href="tel:+22901509574880"
+                className="text-primary hover:text-secondary transition-colors font-medium"
+              >
+                +229 01 50 95 74 80
+              </a>
+            </div>
+            <div className="flex flex-col items-center text-center">
+              <MapPin className="text-primary mb-3" size={32} />
+              <p className="text-sm text-gray-400 mb-2">Adresse</p>
+              <p className="text-white font-medium">[Adresse complète]</p>
+            </div>
+          </div>
+        </motion.div>
+
+        {/* Footer Note */}
+        <motion.p
+          className="text-center text-gray-500 text-sm mt-12"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          transition={{ duration: 0.6, delay: 0.3 }}
+          viewport={{ once: true }}
+        >
+          Dernière mise à jour :{" "}
+          {new Date().toLocaleDateString("fr-FR", {
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+          })}
+        </motion.p>
+      </div>
+    </div>
+  );
+};
+
+export default MentionsLegales;

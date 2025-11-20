@@ -58,7 +58,8 @@ export const EvenementSchema = z.object({
   prix_unitaire : z
     .number(), 
   date_debut: z.coerce.date(),
-  date_fin: z.coerce.date().refine(date => date > new Date(), "La date de fin doit être dans le futur")
+  date_fin: z.coerce.date().refine(date => date > new Date(), "La date de fin doit être dans le futur"),
+  commissions : z.coerce.number().optional(),
 })
 
 export const candidateSchema = z.object({

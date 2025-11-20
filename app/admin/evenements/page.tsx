@@ -25,10 +25,8 @@ const Page = () => {
       const response = await fetch(`${config.env.apiEndpoint}api/Evenement/get`, {
         method: 'GET'
       })
-        console.log(response)
       if (response.ok) {
         const data = await response.json()
-          console.log(data)
         setEvenment(Array.isArray(data.evenements) ? data.evenements : [])
       }
     } catch (error) {

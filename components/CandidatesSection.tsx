@@ -1,21 +1,26 @@
 "use client"
-import React, { useState } from 'react'
+import React, { useState, useMemo } from 'react'
 import { motion } from 'framer-motion'
 import { Button } from './ui/button'
 import Link from 'next/link'
 import { Badge } from './ui/badge'
 import { getCodeFil } from '@/lib/utils'
 import { Candidate } from '@/types'
-import VoteModal from './admin/voteModal' // Assurez-vous que le chemin est correct
+import VoteModal from './admin/voteModal'
 
 interface Props {
     candidates: Candidate[], 
-    prixUnitaire : number
+    prixUnitaire: number
 }
 
-const CandidatesSection = ({ candidates , prixUnitaire }: Props) => {
+const CandidatesSection = ({ candidates, prixUnitaire }: Props) => {
     const [voteModalOpen, setVoteModalOpen] = useState(false);
     const [selectedCandidat, setSelectedCandidat] = useState<Candidate | null>(null);
+
+    // Trier les candidats par nombre de votes (du plus grand au plus petit)
+    const sortedCandidates = useMemo(() => {
+        return [...candidates].sort((a, b) => b.nombreVotes - a.nombreVotes);
+    }, [candidates]);
 
     const handleVoteClick = (candidate: Candidate) => {
         setSelectedCandidat(candidate);
@@ -68,7 +73,7 @@ const CandidatesSection = ({ candidates , prixUnitaire }: Props) => {
                         Découvrez les candidates de MissPigier
                     </motion.h2>
                     <motion.p
-                        className="text-center text-white mb-12 max-w-2xl mx-auto text-lg  "
+                        className="text-center text-white mb-12 max-w-2xl mx-auto text-lg"
                         initial={{ opacity: 0 }}
                         whileInView={{ opacity: 1 }}
                         transition={{ duration: 0.6, delay: 0.2 }}
@@ -84,31 +89,44 @@ const CandidatesSection = ({ candidates , prixUnitaire }: Props) => {
                         whileInView="visible"
                         viewport={{ once: true }}
                     >
-                        {candidates.map((candidate) => (
+                        {sortedCandidates.map((candidate, index) => (
                             <motion.div
                                 key={candidate.id}
                                 variants={itemVariants}
                                 whileHover={cardHover}
                                 className="relative cursor-pointer w-full h-[320px] border-2 border-primary/30 rounded-2xl hover:shadow-[0_0_20px_rgba(255,215,0,0.3),0_0_40px_rgba(255,215,0,0.2),0_0_60px_rgba(255,215,0,0.1)]"
                             >
-                                {/* Badge */}
+                                {/* Badge Filière */}
                                 <Badge className='absolute top-4 right-4 z-20 bg-secondary'>
                                     {getCodeFil(candidate.filiere)}
                                 </Badge>
+
+                                {/* Badge Position - Top 3 */}
+                                {index < 3 && (
+                                    <Badge className={`absolute top-4 left-4 z-20 ${
+                                        index === 0 ? 'bg-yellow-500' : 
+                                        index === 1 ? 'bg-gray-400' : 
+                                        'bg-orange-600'
+                                    }`}>
+                                        #{index + 1}
+                                    </Badge>
+                                )}
+
                                 <div className="relative h-full overflow-hidden rounded-2xl">
                                     <motion.img
                                         src={candidate.image}
-                                        alt="image"
-                                        className="w-full h-full object-cover transition-transform duration-500 "
+                                        alt={`${candidate.nom} ${candidate.prenom}`}
+                                        className="w-full h-full object-cover transition-transform duration-500"
                                     />
                                     <div className="absolute inset-0 bg-gradient-to-t from-neutral-950 via-transparent to-transparent" />
                                     <div className="absolute inset-0 bg-gradient-to-t from-neutral-950 via-transparent to-transparent" />
                                     <div className="absolute inset-0 bg-gradient-to-t from-neutral-950 via-transparent to-transparent" />
                                 </div>
+
                                 <div className='absolute bottom-0 left-0 right-0 z-20 p-2'>
                                     <div>
                                         <Link href={`/candidates/${candidate.id}`} className='text-primary hover:underline font-extrabold text-base'>
-                                            {candidate.nom}{" "} {candidate.prenom}
+                                            {candidate.nom} {candidate.prenom}
                                         </Link>
                                         <p className='text-[12px]'>
                                             {candidate.description}
@@ -122,10 +140,9 @@ const CandidatesSection = ({ candidates , prixUnitaire }: Props) => {
                                             </p>
                                         </div>
                                         <Button 
-                                            size="sm" 
-                                            className=''
+                                            size="sm"
                                             onClick={(e) => {
-                                                e.preventDefault(); // Empêche la navigation si le bouton est dans un Link
+                                                e.preventDefault();
                                                 handleVoteClick(candidate);
                                             }}
                                         >
@@ -172,7 +189,7 @@ const CandidatesSection = ({ candidates , prixUnitaire }: Props) => {
                         </div>
                         <div className="flex items-start gap-4">
                             <span className="bg-yellow-400 text-black rounded-full w-8 h-8 flex items-center justify-center font-bold text-sm flex-shrink-0">2</span>
-                            <p>Cliquez sur le bouton &#34;Voter&#34; du candidat de votre choix.</p>
+                            <p>Cliquez sur le bouton &quot;Voter&quot; du candidat de votre choix.</p>
                         </div>
                         <div className="flex items-start gap-4">
                             <span className="bg-yellow-400 text-black rounded-full w-8 h-8 flex items-center justify-center font-bold text-sm flex-shrink-0">3</span>

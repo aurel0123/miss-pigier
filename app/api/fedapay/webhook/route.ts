@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { db } from '@/database/drizzle';
-import { paiements, votes, candidates, commissions } from '@/database/schema';
+import { paiements, votes, candidates, commissions, evenements } from '@/database/schema';
 import { eq } from 'drizzle-orm';
 
 export async function POST(request: NextRequest) {
@@ -24,16 +24,24 @@ export async function POST(request: NextRequest) {
             }
 
             // Récupérer le paiement en base
-            const [paiement] = await db.select()
-                .from(paiements)
-                .where(eq(paiements.id, paiementId));
+            // Récupérer le paiement + la commission de l'événement
+            const [row] = await db
+            .select({
+                paiement: paiements,
+                eventCommission: evenements.commissions,
+            })
+            .from(paiements)
+            .innerJoin(evenements, eq(paiements.evenementId, evenements.id))
+            .where(eq(paiements.id, paiementId));
 
-            if (!paiement) {
-                console.error('❌ Paiement non trouvé:', paiementId);
-                return NextResponse.json({ error: 'Paiement non trouvé' }, { status: 404 });
+            if (!row) {
+            console.error('❌ Paiement non trouvé:', paiementId);
+            return NextResponse.json({ error: 'Paiement non trouvé' }, { status: 404 });
             }
 
-            console.log('💳 Paiement trouvé:', paiement);
+            const paiement = row.paiement;
+            const commissionPourcentage = row.eventCommission ?? 35; // fallback 35% si null
+
 
             // Vérifier que le paiement n'est pas déjà traité
             if (paiement.status === 'validated') {
@@ -105,16 +113,21 @@ export async function POST(request: NextRequest) {
 
                 console.log('✅ Candidat mis à jour - nouveaux votes:', (candidat.nombreVotes || 0) + nombreVote);
 
-                // 4. Calculer et enregistrer les commissions (5% pour le site)
-                const tauxCommission = 0.05;
-                const partSite = Math.floor(paiement.montant * tauxCommission);
+                // 4. Calculer et enregistrer les commissions (35% pour le site)
+                // 4. Calculer et enregistrer les commissions selon l'événement
+                const tauxCommission = (commissionPourcentage / 100);
+
+                // On peut sécuriser un peu :
+                const taux = Math.min(Math.max(tauxCommission, 0), 1); // entre 0 et 1
+
+                const partSite = Math.floor(paiement.montant * taux);
                 const partOrganisateur = paiement.montant - partSite;
 
                 const [newCommission] = await trx.insert(commissions).values({
-                    paiementId: paiementId,
-                    montantTotal: paiement.montant,
-                    partSite: partSite,
-                    partOrganisateur: partOrganisateur
+                paiementId: paiementId,
+                montantTotal: paiement.montant,
+                partSite,
+                partOrganisateur,
                 }).returning();
 
                 console.log('✅ Commission créée:', newCommission.id);

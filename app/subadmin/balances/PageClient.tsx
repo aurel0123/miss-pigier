@@ -37,15 +37,38 @@ import {
   EmptyHeader,
   EmptyMedia,
 } from "@/components/ui/empty";
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger, DialogFooter } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+  DialogFooter,
+} from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
 import { Badge } from "@/components/ui/badge";
 import config from "@/lib/config";
 import { toast } from "sonner";
 
 interface PageClientProps {
   userId: string;
+}
+
+interface Stats {
+  totalApprouve: number;
+  totalEnCours: number;
+  totalComplete: number;
+  countEnCours: number;
+  countApprouve: number;
 }
 
 export default function PageClient({ userId }: PageClientProps) {
@@ -55,11 +78,31 @@ export default function PageClient({ userId }: PageClientProps) {
   const form = useForm<z.infer<typeof retraySchema>>({
     resolver: zodResolver(retraySchema),
     defaultValues: {
-        montant_retrait : 0, 
-        telephone : "",
-        userId 
+      montant_retrait: 0,
+      telephone: "",
+      userId,
     },
   });
+
+  const [stats, setStats] = React.useState({
+    totalGagne: 0,
+    soldeDisponible: 0,
+    enAttente: { montant: 0, nombre: 0 },
+    totalRetire: { montant: 0, nombre: 0 },
+  });
+
+  // Fonction pour récupérer les stats
+  const getStats = async () => {
+    try {
+      const res = await fetch(`${config.env.apiEndpoint}/api/subadmin/stats/balances`);
+      const result = await res.json();
+      if (result.success) {
+        setStats(result.data);
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  };
 
   const getRetray = async () => {
     try {
@@ -79,8 +122,8 @@ export default function PageClient({ userId }: PageClientProps) {
       body: JSON.stringify(values),
     });
     const result = await res.json();
-    if(result.success) {
-      toast.success("Demande créer avec succès")
+    if (result.success) {
+      toast.success("Demande créer avec succès");
     }
     setOpen(false);
     form.reset();
@@ -89,14 +132,15 @@ export default function PageClient({ userId }: PageClientProps) {
 
   useEffect(() => {
     getRetray();
+    getStats();
   }, []);
 
   // Mapping des couleurs de badge selon le status
   const statusColor: Record<string, string> = {
     "en cour": "yellow",
-    "approuver": "green",
-    "completer": "blue",
-    "rejecter" : "red"
+    approuver: "green",
+    completer: "blue",
+    rejecter: "red",
   };
 
   return (
@@ -104,7 +148,9 @@ export default function PageClient({ userId }: PageClientProps) {
       {/* Header */}
       <div>
         <h1 className="text-4xl font-bold text-gray-900 mb-2">Balances</h1>
-        <p className="text-base text-gray-600">Retirer votre montant à tout moment</p>
+        <p className="text-base text-gray-600">
+          Retirer votre montant à tout moment
+        </p>
       </div>
 
       <Separator className="my-4" />
@@ -113,13 +159,17 @@ export default function PageClient({ userId }: PageClientProps) {
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
         <Card className="border border-neutral-200 hover:shadow-xl transition-shadow bg-white">
           <CardHeader>
-            <CardTitle>Transactions approuvées</CardTitle>
+            <CardTitle> Gains Totaux</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="flex flex-col gap-4">
               <HandCoins size={56} strokeWidth={1} />
-              <span className="text-xl">0 <strong>FCFA</strong></span>
-              <p className="text-base font-semibold text-gray-600">(0) transaction approuvée</p>
+              <span className="text-xl font-semibold">
+                {stats.totalGagne.toLocaleString()} <strong>FCFA</strong>
+              </span>
+              <p className="text-base font-semibold text-gray-600">
+                Revenus totaux (votes)
+              </p>
             </div>
           </CardContent>
         </Card>
@@ -131,21 +181,27 @@ export default function PageClient({ userId }: PageClientProps) {
           <CardContent>
             <div className="flex flex-col space-y-4 text-purple-500">
               <WalletMinimal size={56} strokeWidth={1} />
-              <span className="text-xl">0 <strong>FCFA</strong></span>
-              <p className="text-base font-semibold text-gray-600">Disponible(s)</p>
+              <span className="text-xl font-semibold">
+                {stats.soldeDisponible.toLocaleString()}  <strong>FCFA</strong>
+              </span>
+              <p className="text-base font-semibold text-gray-600">
+                Disponible pour retrait
+              </p>
             </div>
           </CardContent>
         </Card>
 
         <Card className="border border-neutral-200 hover:shadow-xl transition-shadow bg-white">
           <CardHeader>
-            <CardTitle className="text-yellow-500">Demande en attente</CardTitle>
+            <CardTitle className="text-yellow-500">
+              Demande en attente
+            </CardTitle>
           </CardHeader>
           <CardContent>
             <div className="flex flex-col space-y-4 text-yellow-500">
               <Clock size={56} strokeWidth={1} />
-              <span className="text-xl">0 <strong>FCFA</strong></span>
-              <p className="text-base font-semibold text-gray-600">(0) Demande en attente</p>
+              <span className="text-xl font-semibold">{stats.enAttente.montant.toLocaleString()} <strong>FCFA</strong></span>
+              <p className="text-base font-semibold text-gray-600">({stats.enAttente.nombre}) Demande(s) en attente</p>
             </div>
           </CardContent>
         </Card>
@@ -157,8 +213,8 @@ export default function PageClient({ userId }: PageClientProps) {
           <CardContent>
             <div className="flex flex-col gap-2 text-green-500">
               <PiggyBank size={56} strokeWidth={1} />
-              <span className="text-xl">0 <strong>FCFA</strong></span>
-              <p className="text-base font-semibold text-gray-600">0 FCFA Montant total retiré</p>
+              <span className="text-xl font-semibold">{stats.totalRetire.montant.toLocaleString()} <strong>FCFA</strong></span>
+              <p className="text-base font-semibold text-gray-600">Montant total retiré</p>
             </div>
           </CardContent>
         </Card>
@@ -171,7 +227,8 @@ export default function PageClient({ userId }: PageClientProps) {
             <ItemTitle>
               <BadgeInfo className="size-5" />
               <p>
-                Veuillez lancer la demande de retrait. Merci de patienter : une notification vous sera envoyée pour approbation.
+                Veuillez lancer la demande de retrait. Merci de patienter : une
+                notification vous sera envoyée pour approbation.
               </p>
             </ItemTitle>
           </ItemContent>
@@ -182,21 +239,33 @@ export default function PageClient({ userId }: PageClientProps) {
               </DialogTrigger>
               <DialogContent>
                 <DialogHeader>
-                  <DialogTitle className="text-black">Nouvelle demande de retrait</DialogTitle>
+                  <DialogTitle className="text-black">
+                    Nouvelle demande de retrait
+                  </DialogTitle>
                   <DialogDescription>
-                    Saisissez le montant et le numéro de téléphone pour valider votre demande.
+                    Saisissez le montant et le numéro de téléphone pour valider
+                    votre demande.
                   </DialogDescription>
                 </DialogHeader>
                 <Form {...form}>
-                  <form onSubmit={form.handleSubmit(handleRetray)} className="space-y-8">
+                  <form
+                    onSubmit={form.handleSubmit(handleRetray)}
+                    className="space-y-8"
+                  >
                     <FormField
                       control={form.control}
                       name="montant_retrait"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel className="text-black">Montant du retrait</FormLabel>
+                          <FormLabel className="text-black">
+                            Montant du retrait
+                          </FormLabel>
                           <FormControl>
-                            <Input placeholder="Entrer le montant du retrait" {...field} className="text-black" />
+                            <Input
+                              placeholder="Entrer le montant du retrait"
+                              {...field}
+                              className="text-black"
+                            />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -207,16 +276,24 @@ export default function PageClient({ userId }: PageClientProps) {
                       name="telephone"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel className="text-black">Numéro de téléphone</FormLabel>
+                          <FormLabel className="text-black">
+                            Numéro de téléphone
+                          </FormLabel>
                           <FormControl>
-                            <Input placeholder="01 90 90 76 00" {...field} className="text-black" />
+                            <Input
+                              placeholder="01 90 90 76 00"
+                              {...field}
+                              className="text-black"
+                            />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
                       )}
                     />
                     <DialogFooter>
-                      <Button type="submit" className="w-full">Envoyer la demande</Button>
+                      <Button type="submit" className="w-full">
+                        Envoyer la demande
+                      </Button>
                     </DialogFooter>
                   </form>
                 </Form>
@@ -245,11 +322,17 @@ export default function PageClient({ userId }: PageClientProps) {
                 <TableCell colSpan={6}>
                   <Empty>
                     <EmptyHeader>
-                      <EmptyMedia variant="icon"><PiggyBank /></EmptyMedia>
-                      <EmptyDescription>Vous n&apos;avez encore aucune demande de retrait.</EmptyDescription>
+                      <EmptyMedia variant="icon">
+                        <PiggyBank />
+                      </EmptyMedia>
+                      <EmptyDescription>
+                        Vous n&apos;avez encore aucune demande de retrait.
+                      </EmptyDescription>
                     </EmptyHeader>
                     <EmptyContent>
-                      <Button onClick={() => setOpen(true)}>Demande de retrait</Button>
+                      <Button onClick={() => setOpen(true)}>
+                        Demande de retrait
+                      </Button>
                     </EmptyContent>
                   </Empty>
                 </TableCell>
@@ -260,26 +343,29 @@ export default function PageClient({ userId }: PageClientProps) {
                   <TableCell className="font-medium">{index + 1}</TableCell>
                   <TableCell>{item.montant_retrait} FCFA</TableCell>
                   <TableCell>
-                    <Badge className={`bg-${statusColor[item.status] || "gray"}-400 text-${statusColor[item.status] || "gray"}-800`}>
+                    <Badge
+                      className={`bg-${statusColor[item.status] || "gray"}-400 text-${statusColor[item.status] || "gray"}-800`}
+                    >
                       {item.status}
                     </Badge>
                   </TableCell>
                   <TableCell>{item.telephone}</TableCell>
-                  <TableCell >
-                    {new Date(item.date_creation).toLocaleDateString('fr-FR', {
-                        day: '2-digit',
-                        month: 'short',
-                        year: 'numeric'
+                  <TableCell>
+                    {new Date(item.date_creation).toLocaleDateString("fr-FR", {
+                      day: "2-digit",
+                      month: "short",
+                      year: "numeric",
                     })}
-
                   </TableCell>
                   <TableCell className="text-right">
-                    {new Date(item.date_aprobation).toLocaleDateString('fr-FR', {
-                        day: '2-digit',
-                        month: 'short',
-                        year: 'numeric'
-                    })}
-
+                    {new Date(item.date_aprobation).toLocaleDateString(
+                      "fr-FR",
+                      {
+                        day: "2-digit",
+                        month: "short",
+                        year: "numeric",
+                      }
+                    )}
                   </TableCell>
                 </TableRow>
               ))

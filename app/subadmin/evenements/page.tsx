@@ -1,24 +1,18 @@
 "use client"
 import CardEvenement from '@/components/admin/CardEvenement'
-import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import config from '@/lib/config'
 import { Evenement } from '@/types'
 import { Search } from 'lucide-react'
-import { useRouter } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
 import { Ring2 } from 'ldrs/react'
 import 'ldrs/react/Ring2.css'
 
 const Page = () => {
-  const router = useRouter()
   const [evenment, setEvenment] = useState<Evenement[]>([])
   const [loading, setLoading] = useState(true)
 
-  const handleClik = () => {
-    router.push('/admin/evenements/AddEvenement')
-  }
-
+  
   const getEvenment = async () => {
     try {
       setLoading(true)
@@ -82,9 +76,6 @@ const Page = () => {
           <Search size={18} className="text-primary-foreground" />
           <Input type='search' placeholder='Rechercher...' className='text-primary-foreground border-none focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:outline-none shadow-none placeholder:text-primary-foreground' />
         </div>
-        <Button onClick={handleClik}>
-          Ajouter votre évènement
-        </Button>
       </div>
       <div className='evenement'>
         {

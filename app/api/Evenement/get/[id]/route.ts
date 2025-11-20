@@ -1,41 +1,38 @@
-import { NextRequest, NextResponse } from "next/server";
+// app/api/Evenement/get/[id]/route.ts
+import { NextResponse } from "next/server";
 import { db } from "@/database/drizzle";
 import { evenements } from "@/database/schema";
-import { eq, and } from "drizzle-orm";
+import { eq } from "drizzle-orm";
 
 export async function GET(
-    req: NextRequest,
-    { params }: { params: { id: string } }
+  req: Request,
+  { params }: { params: { id: string } }
 ) {
-    try {
-        const { id } = params;
+  try {
+    const { id } = params;
 
-        if (!id) {
-            return NextResponse.json({ success: false, error: "ID manquant" }, { status: 400 });
-        }
+    const rows = await db
+      .select()
+      .from(evenements)
+      .where(eq(evenements.id, id))
+      .limit(1);
 
-        const evenement = await db
-            .select()
-            .from(evenements)
-            .where(and(eq(evenements.id, id), eq(evenements.publish, true)))
-            .limit(1);
-
-        if (evenement.length === 0) {
-            return NextResponse.json(
-                { success: false, error: "Aucun événement trouvé ou non publié" },
-                { status: 404 }
-            );
-        }
-
-        return NextResponse.json({
-            success: true,
-            data: evenement[0],
-        });
-    } catch (error) {
-        console.error("Erreur GET /Evenement/get/[id] :", error);
-        return NextResponse.json(
-            { success: false, error: "Erreur lors de la récupération de l'événement" },
-            { status: 500 }
-        );
+    if (rows.length === 0) {
+      return NextResponse.json(
+        { success: false, error: "Événement non trouvé" },
+        { status: 404 }
+      );
     }
+
+    return NextResponse.json(
+      { success: true, data: rows[0] }, // ⬅️ data, pas evenement
+      { status: 200 }
+    );
+  } catch (error) {
+    console.error("Erreur GET événement:", error);
+    return NextResponse.json(
+      { success: false, error: "Erreur interne du serveur" },
+      { status: 500 }
+    );
+  }
 }

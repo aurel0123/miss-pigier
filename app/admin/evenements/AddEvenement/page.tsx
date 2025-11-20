@@ -31,6 +31,7 @@ const Page = () => {
             prix_unitaire: 0,
             date_debut: new Date(),
             date_fin: new Date(),
+            commissions: 0,
         },
     });
 
@@ -182,6 +183,27 @@ const Page = () => {
                                                 onBlur={field.onBlur}
                                                 name={field.name}
                                                 ref={field.ref}
+                                                className="text-primary-foreground col-span-3 border-primary rounded-md [&:focus]:outline-none [&:focus]:ring-0 [&:focus]:border-primary py-6"
+                                            />
+                                        </FormControl>
+                                        <FormMessage/>
+                                    </FormItem>
+                                )}
+                            />
+                        </div>
+                        <div className="flex flex-col space-y-4">
+                            <FormField
+                                control={form.control}
+                                name="commissions"
+                                render={({field}) => (
+                                    <FormItem>
+                                        <FormLabel>Commissions en %</FormLabel>
+                                        <FormControl>
+                                            <Input
+                                                type="number"
+                                                placeholder="10%"
+                                                {...field}
+                                                max={100}
                                                 className="text-primary-foreground col-span-3 border-primary rounded-md [&:focus]:outline-none [&:focus]:ring-0 [&:focus]:border-primary py-6"
                                             />
                                         </FormControl>

@@ -47,7 +47,7 @@ const VoteModal = ({
   }, [open]); // Re-vérifier quand le modal s'ouvre
 
   const montantTotal = prixVote * nombreVote;
-  
+
   const validateForm = () => {
     const newErrors: { [key: string]: string } = {};
 
@@ -92,18 +92,19 @@ const VoteModal = ({
   const handlePayment = async () => {
     // Vérifier d'abord si FedaPay est disponible globalement
     if (typeof window === "undefined" || !window.FedaPay) {
-      alert("Le système de paiement est en cours de chargement. Veuillez patienter.");
+      alert(
+        "Le système de paiement est en cours de chargement. Veuillez patienter."
+      );
       return;
     }
 
     setIsLoading(true);
-    
+
     try {
-      // 1. Créer le paiement en base de données
-      const paiementResponse = await fetch('/api/paiement', {
-        method: 'POST',
+      const paiementResponse = await fetch("/api/paiement", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           numeroTel: numeroTelephone,
@@ -114,8 +115,19 @@ const VoteModal = ({
         }),
       });
 
+      // Si rate limit dépassé
+      if (paiementResponse.status === 429) {
+        const data = await paiementResponse.json();
+        alert(
+          data.error ||
+            "Trop de tentatives de vote. Veuillez réessayer plus tard."
+        );
+        setIsLoading(false);
+        return;
+      }
+
       if (!paiementResponse.ok) {
-        throw new Error('Erreur lors de la création du paiement');
+        throw new Error("Erreur lors de la création du paiement");
       }
 
       const paiementData = await paiementResponse.json();
@@ -123,56 +135,58 @@ const VoteModal = ({
       // 2. Initialiser le widget FedaPay et ouvrir la boîte de dialogue
       const widget = window.FedaPay.init({
         public_key: process.env.NEXT_PUBLIC_FEDAPAY_PUBLIC_KEY,
-        environment: process.env.NODE_ENV === 'production' ? 'live' : 'sandbox',
+        environment: process.env.NODE_ENV === "production" ? "live" : "sandbox",
         transaction: {
           amount: montantTotal,
           description: `Vote pour ${candidate.nom} ${candidate.prenom}`,
           custom_metadata: {
             paiement_id: paiementData.paiementId,
             candidat_id: candidate.id,
-            nombre_votes: nombreVote
-          }
+            nombre_votes: nombreVote,
+          },
         },
         customer: {
           phone_number: {
             number: numeroTelephone,
-            country: 'BJ'
-          }
+            country: "BJ",
+          },
         },
         currency: {
-          iso: 'XOF'
+          iso: "XOF",
         },
         onComplete: async ({ reason, transaction }) => {
-          console.log('Résultat du paiement:', { reason, transaction });
-          
+          console.log("Résultat du paiement:", { reason, transaction });
+
           if (reason === window.FedaPay.CHECKOUT_COMPLETED) {
-            alert('Paiement effectué avec succès ! Vos votes ont été comptabilisés.');
-            
+            alert(
+              "Paiement effectué avec succès ! Vos votes ont été comptabilisés."
+            );
+
             try {
-              const verificationResponse = await fetch(`/api/paiement/verify/${paiementData.paiementId}`);
+              const verificationResponse = await fetch(
+                `/api/paiement/verify/${paiementData.paiementId}`
+              );
               const verificationData = await verificationResponse.json();
-              
+
               if (verificationData.success) {
                 handleClose(false);
                 window.location.reload();
               }
             } catch (error) {
-              console.error('Erreur lors de la vérification:', error);
+              console.error("Erreur lors de la vérification:", error);
             }
-            
           } else if (reason === window.FedaPay.DIALOG_DISMISSED) {
-            console.log('Paiement annulé par l\'utilisateur');
+            console.log("Paiement annulé par l'utilisateur");
           }
-          
+
           setIsLoading(false);
-        }
+        },
       });
       handleClose(false);
       widget.open();
-
     } catch (error) {
-      console.error('Erreur lors du paiement:', error);
-      alert('Une erreur est survenue lors du paiement. Veuillez réessayer.');
+      console.error("Erreur lors du paiement:", error);
+      alert("Une erreur est survenue lors du paiement. Veuillez réessayer.");
       setIsLoading(false);
     }
   };
@@ -183,11 +197,11 @@ const VoteModal = ({
       <Script
         src="https://cdn.fedapay.com/checkout.js?v=1.1.7"
         onLoad={() => {
-          console.log('FedaPay Checkout.js chargé');
+          console.log("FedaPay Checkout.js chargé");
           setFedaPayLoaded(true);
         }}
         onError={() => {
-          console.error('Erreur lors du chargement de FedaPay');
+          console.error("Erreur lors du chargement de FedaPay");
         }}
       />
 
@@ -198,7 +212,7 @@ const VoteModal = ({
               Voter pour {candidate.nom} {candidate.prenom}
             </DialogTitle>
           </DialogHeader>
-          
+
           {step === 1 && (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="flex flex-col gap-4 order-2 md:order-1">
@@ -298,7 +312,7 @@ const VoteModal = ({
               </div>
             </div>
           )}
-          
+
           {step === 2 && (
             <div className="flex flex-col gap-4 sm:gap-6">
               <div className="p-3 sm:p-4 bg-gray-800 dark:bg-gray-800 rounded-lg">
@@ -354,13 +368,14 @@ const VoteModal = ({
                   </div>
                 </div>
               </div>
-              
+
               <div>
                 <p className="text-red-500 text-sm font-bold">
                   Des frais de transaction peuvent être appliqués.
                 </p>
                 <p className=" text-white text-base">
-                  En cliquant sur &apos;Payer maintenant&apos;, une boîte de dialogue sécurisée s&apos;ouvrira.
+                  En cliquant sur &apos;Payer maintenant&apos;, une boîte de
+                  dialogue sécurisée s&apos;ouvrira.
                 </p>
               </div>
             </div>
