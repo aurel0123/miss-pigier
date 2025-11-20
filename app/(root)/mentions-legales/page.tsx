@@ -8,65 +8,78 @@ const MentionsLegales = () => {
     {
       icon: FileText,
       title: "1. Éditeur du site",
-      content: `Le présent site est édité par Ulmann Service, entreprise spécialisée dans la vente de données mobiles et création de service numérique possédant un registre de commerce et un numéro par l'État. Ulmann Service est dûment enregistrée au Registre du Commerce.
+      content: `Le présent site est édité par Ulmann Service, entreprise spécialisée dans la vente de données mobiles et la création de services numériques possédant un registre de commerce reconnu par l’État.
 
-Adresse : [Adresse de l'entreprise]
-Téléphone : +229 01 50 95 74 80
+Ulmann Service est dûment enregistrée au Registre du Commerce.
+
+Adresse : Abomey-Calavi Togoudo  M/AZELIGUI
+Téléphone : 01 50 95 74 80
 Email : ulmannazeligui@gmail.com
-Responsable de la publication : [Nom du responsable]`,
+Responsable de la publication : AZELIGUI  Prince Ulmann Osias
+IFU : 0202557751486`,
     },
     {
       icon: Shield,
       title: "2. Objet du site",
-      content: `Ulmann Service propose, entre autres services numériques, la conception et la mise en place de sites web destinés aux votes en ligne. Le présent site est développé pour le compte de structures, universités ou organisations souhaitant organiser un concours ou une élection interne.`,
+      content: `Ulmann Service propose, entre autres services numériques, la conception et la mise en place de sites web destinés aux votes en ligne.
+
+Le présent site est développé pour le compte de structures, universités ou organisations souhaitant organiser un concours ou une élection interne.`,
     },
     {
       icon: FileText,
       title: "3. Hébergement",
-      content: `Le site est hébergé par : [NOM DE L'HÉBERGEUR]
-Adresse : [Adresse de l'hébergeur]
-Site web : [URL de l'hébergeur]`,
+      content: `Le site est hébergé par :
+
+Vercel
+
+Site web : https://vercel.com/`,
     },
     {
       icon: Scale,
       title: "4. Propriété intellectuelle",
-      content: `L'ensemble des éléments composant ce site (textes, images, logos, graphiques, contenus, interfaces, structure) est protégé par la législation en vigueur. Toute reproduction, représentation ou exploitation partielle ou totale, sans autorisation préalable d'Ulmann Service, est strictement interdite.`,
+      content: `L’ensemble des éléments composant ce site (textes, images, logos, graphiques, contenus, interfaces, structure) est protégé par la législation en vigueur.
+
+Toute reproduction, représentation ou exploitation partielle ou totale, sans autorisation préalable d’Ulmann Service, est strictement interdite.`,
     },
     {
       icon: Shield,
       title: "5. Données personnelles",
-      content: `Dans le cadre du fonctionnement du site (inscriptions, gestion des votes, sécurité), certaines données personnelles peuvent être collectées. Ces données sont utilisées uniquement pour :
+      content: `Dans le cadre du fonctionnement du site (inscriptions, gestion des votes, sécurité), certaines données personnelles peuvent être collectées.
 
-• Assurer le bon déroulement du concours
-• Garantir la sécurité et la validité des votes
-• Prévenir les fraudes
-• Gérer la participation des candidats et des utilisateurs
+Ces données sont utilisées uniquement pour :
+• assurer le bon déroulement du concours ;
+• garantir la sécurité et la validité des votes ;
+• prévenir les fraudes ;
+• gérer la participation des candidats et des utilisateurs.
 
-Les données ne sont ni revendues, ni partagées à des tiers non autorisés. Conformément aux réglementations applicables, chaque utilisateur dispose d'un droit d'accès, de rectification et de suppression.
+Les données ne sont ni revendues, ni partagées à des tiers non autorisés.
+
+Conformément aux réglementations applicables, chaque utilisateur dispose d’un droit d’accès, de rectification et de suppression.
 
 Pour toute demande : ulmannazeligui@gmail.com`,
     },
     {
       icon: FileText,
       title: "6. Cookies",
-      content: `Le site peut utiliser des cookies techniques et analytiques permettant d'assurer son bon fonctionnement. L'utilisateur peut configurer ses préférences via les paramètres de son navigateur.`,
+      content: `Le site peut utiliser des cookies techniques et analytiques permettant d’assurer son bon fonctionnement.
+
+L’utilisateur peut configurer ses préférences via les paramètres de son navigateur.`,
     },
     {
       icon: Shield,
       title: "7. Responsabilité",
-      content: `Ulmann Service s'engage à fournir des services fiables et sécurisés, mais ne saurait être tenue responsable :
+      content: `Ulmann Service s’engage à fournir des services fiables et sécurisés, mais ne saurait être tenue responsable :
+• d’interruptions temporaires du service ;
+• de problèmes liés au réseau internet ;
+• de comportements frauduleux émanant d’utilisateurs ou de tiers ;
+• de l’utilisation non conforme du site.
 
-• D'interruptions temporaires du service
-• De problèmes liés au réseau internet
-• De comportements frauduleux émanant d'utilisateurs ou de tiers
-• De l'utilisation non conforme du site
-
-Ulmann Service se réserve le droit d'annuler tout vote suspect ou identifié comme frauduleux.`,
+Ulmann Service se réserve le droit d’annuler tout vote suspect ou identifié comme frauduleux.`,
     },
     {
       icon: FileText,
       title: "8. Modification des mentions légales",
-      content: `Les présentes mentions peuvent être modifiées à tout moment. L'utilisateur est invité à les consulter régulièrement.`,
+      content: `Les présentes mentions peuvent être modifiées à tout moment. L’utilisateur est invité à les consulter régulièrement.`,
     },
   ];
 
@@ -81,7 +94,7 @@ Ulmann Service se réserve le droit d'annuler tout vote suspect ou identifié co
           transition={{ duration: 0.6 }}
         >
           <h1 className="text-4xl md:text-5xl font-bold text-primary mb-4">
-            Mentions Légales
+            Mentions Légales – Ulmann Service
           </h1>
           <p className="text-gray-400 text-lg max-w-2xl mx-auto">
             Informations légales relatives à l&apos;utilisation du site Ulmann
@@ -143,7 +156,7 @@ Ulmann Service se réserve le droit d'annuler tout vote suspect ou identifié co
               <Phone className="text-primary mb-3" size={32} />
               <p className="text-sm text-gray-400 mb-2">Téléphone</p>
               <a
-                href="tel:+22901509574880"
+                href="tel:+2290150957480"
                 className="text-primary hover:text-secondary transition-colors font-medium"
               >
                 +229 01 50 95 74 80
@@ -152,7 +165,9 @@ Ulmann Service se réserve le droit d'annuler tout vote suspect ou identifié co
             <div className="flex flex-col items-center text-center">
               <MapPin className="text-primary mb-3" size={32} />
               <p className="text-sm text-gray-400 mb-2">Adresse</p>
-              <p className="text-white font-medium">[Adresse complète]</p>
+              <p className="text-white font-medium">
+                Abomey-Calavi Togoudo  M/AZELIGUI
+              </p>
             </div>
           </div>
         </motion.div>
