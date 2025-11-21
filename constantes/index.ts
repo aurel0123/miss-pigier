@@ -185,11 +185,6 @@ export const dataNavigation = {
                     url : '/subadmin'
                 },
                 {
-                    title : "Evènements",
-                    icon : Calendar,
-                    url : "/subadmin/evenements"
-                },
-                {
                     title : "Transactions",
                     icon : Crown,
                     url : "/subadmin/transactions"
